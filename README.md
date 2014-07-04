@@ -1,4 +1,4 @@
-iceberg-ui
+wisegorge-ui
 ==========
 
-iceberg UI Design
+wisegorge UI Design
