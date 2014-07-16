@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<style type="text/css">
+
+div {
+
+	border: 1px solid #aaa;
+	background-color:#eee;
+}	
+.box {
+	width:400px;
+	height:100px;
+	background: 
+		url("a.png") no-repeat 20px 20px;
+	background-color:#ddd;
+	border: 1px solid #aaa;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+.abs {
+	position: absolute;
+	top:20px;
+	left:20px;
+	
+}
+
+.rel {
+	position: relative;
+	top:20px;
+	left:20px;	
+}
+
+.fix {
+	position: fixed;
+	top:20px;
+	left:200px;	
+}
+
+#main {
+	width:1000px;
+	background-color:#ddd;
+	margin: 0 auto;
+}
+
+#main2 {
+	max-width:1000px;
+	background-color:#eee;
+	margin: 0 auto;
+}
+
+#simple {
+  width: 500px;
+  margin: 20px auto;
+}
+
+#fancy {
+  width: 500px;
+  margin: 20px auto;
+  padding: 50px;
+  border-width: 10px;
+}
+
+.boxsizing {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;	
+}
+	</style>
+</head>
+<body>
+<h1>top section</h1>	
+<section>
+	<h1>subject-01</h1>
+	<h2>subject-02</h2>
+</section>
+
+<table border=1 style="width:1024px; height:100px">
+	<tr>
+		<td>test</td>
+	</tr>
+</table>
+
+<div class="box abs">parent absolute position, parent=body
+	<div class="box abs">inner absolute position, parent=div</div>
+</div>
+
+<!-- <div class="box abs"></div> -->
+<div class="box rel">Relative Position, table을 기준으로 상대적 위치를 잡는다..</div>
+<div class="box fix">Fixed Position, 스크롤을해도 안움직인다.</div>
+<div style="height:10px; background-color:#eee"></div>
+<div style="height:10px; background-color:#ccc"></div>
+<div style="height:10px; background-color:#eee"></div>
+<div class="box" style="display:none">aaa</div>
+<div style="height:10px; background-color:#ccc"></div>
+<div class="">내용이 안보임</div>
+<div class="box" style="visibility:hidden">내용이 안보임</div>
+<div style="height:10px; background-color:#eee"></div>
+<div style="height:2024px; background-color:#ccc"></div>
+<div id="main">margin left, right를 auto으로 하면 center로 온다.</div>
+<div id="main2">max-width를 잡으면 브라우져가 600이하이면 height가 증가한다.</div>
+<div id="simple">simple width:500</div>
+<div id="fancy">fancy width:500</div>
+
+<div id="simple" class="boxsizing">simple width:500, box-sizing: border-box로 기준을 잡음</div>
+<div id="fancy" class="boxsizing">fancy width:500, box-sizing: border-box로 기준을 잡음</div>
+</body>
+</html>

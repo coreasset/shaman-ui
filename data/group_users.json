@@ -1,0 +1,21 @@
+{
+
+"groups" : {
+	"admin" : [
+			"admin01"
+			, "admin02"
+			, "users"
+		]
+	,"developer" : [
+			"aaaaaa"
+			, "bbbbbb"
+			, "ccccc"
+		]
+	,"users" : [
+			"afkn"
+			, "hnh"
+			, "daum"
+		]		
+	}
+
+}

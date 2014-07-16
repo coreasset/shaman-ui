@@ -1,0 +1,62 @@
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Edit User Groups</h4>
+</div>
+<div class="modal-body">
+    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
+        <div class="row">
+            double click group
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <h3 class="page-header">
+                Available Groups
+                </h3>
+                <select id="available_groups" class="form-control" multiple size="10"></select>
+            </div>
+            <div class="col-xs-6 vline-left">
+                <h3 class="page-header">
+                Current Groups
+                </h3>
+                <select id="current_groups" class="form-control" multiple size="10"></select>
+            </div>            
+
+        </div>
+    </form>
+    <!-- :form -->
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <button type="submit" class="btn btn-success">Save</button>  
+</div>
+
+<script type="text/javascript">
+function bindEditGroups(data){
+    $.each(data.groups.available, function(key, value) {
+        $('#available_groups').append(new Option(value, value));
+    });
+
+    $.each(data.groups.current, function(key, value) {
+        $('#current_groups').append(new Option(value, value));
+    });    
+}
+
+$( document ).ready(function() {
+    // change modal size
+    $('.modal-dialog').addClass('modal-lg');
+
+    // init get data
+    handleJson("data/user_groups.json", bindEditGroups);
+});
+
+
+$("body").on('dblclick', 'select option', function(e) {
+    // move target <select> index
+    var idx = ($("select").eq(0).attr("id") == $(this).parent().attr("id")) ? 1 : 0;
+    $(this).remove();
+    $("select").eq(idx).append($(this));
+});
+
+
+</script>

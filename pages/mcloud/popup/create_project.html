@@ -1,0 +1,238 @@
+<style type="text/css">
+.vline-left {
+    border-left: solid 1px #ddd;
+    padding-left: 20px;
+}
+
+.margin-left-20 {
+    margin-left: 20px;
+}
+
+.first-column-bold tr > td:first-child {
+    font-weight: bold;
+    width: 50%;
+}
+
+.nav-tabs {
+    margin-bottom: 20px;
+}
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Create Project</h4>
+</div>
+
+<div class="modal-body">
+    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
+
+<div class="wrapper row-offcanvas row-offcanvas-left">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Project Info</a></li>
+        <li><a href="#tab2" data-toggle="tab">Project Members</a></li>
+        <li><a href="#tab3" data-toggle="tab">Project Groups</a></li>
+        <li><a href="#tab4" data-toggle="tab">Quota*</a></li>
+    </ul>
+
+    <div id='content' class="tab-content">
+        <div class="tab-pane fade in active" id="tab1">
+        
+            <div class="row">
+                <div class="col-xs-6" style="padding-right:40px">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Domain ID</label>
+                            <div class="col-xs-8">
+                                <input type="text" name="userid" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Domain Name</label>
+                            <div class="col-xs-8">
+                                <input type="text" name="userid" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">* Name</label>
+                            <div class="col-xs-8">
+                                <input type="text" name="userid" class="form-control" placeholder="Project name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label"> Description</label>
+                            <div class="col-xs-8">
+                                <textarea class="form-control" placeholder="Additional information here..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Enable </label>
+                            <div class="col-xs-8">
+                                <input type="checkbox">
+                            </div>
+                        </div>                        
+                    </div>    
+                </div>
+                <div class="col-xs-6 vline-left container" style="height:100%">
+                    <p>
+                    From Here you can create a new project to organize users.
+                    </p>
+
+                </div>            
+
+            </div>  
+        </div>
+        <div class="tab-pane fade" id="tab2">
+            <p>From here you add and remove members to this project from the list of all available users.
+            </p>
+            <div class="row">
+                <div class="col-xs-6" style="padding-right:40px">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Domain ID</label>
+                            <div class="col-xs-8">
+                                <input type="text" name="userid" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Domain Name</label>
+                            <div class="col-xs-8">
+                                <input type="text" name="userid" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">* Name</label>
+                            <div class="col-xs-8">
+                                <input type="text" name="userid" class="form-control" placeholder="Project name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label"> Description</label>
+                            <div class="col-xs-8">
+                                <textarea class="form-control" placeholder="Additional information here..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Enable </label>
+                            <div class="col-xs-8">
+                                <input type="checkbox">
+                            </div>
+                        </div>                        
+                    </div>     
+                </div>
+                <div class="col-xs-6 vline-left">
+                    <p>
+                    Specify the details for launching an instance.
+                    </p>
+                    the chart below shows the resources userd by this project in relatioin to the project's quotas.
+                    <h4 class="page-header">
+                    Flavor Details
+                    </h4>
+
+                    <div class="box box-success">
+                        <div class="box-body no-padding">
+                            <table id="flavor-content" class="table table-striped first-column-bold">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>m1.tiny</td>
+                                </tr>
+
+                                <tr>
+                                    <td>vCPUs</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Root Disk</td>
+                                    <td>9 GB</td>
+                                </tr>
+                                <tr>
+                                    <td>Ephemeral Disk</td>
+                                    <td>0 GB</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Disk</td>
+                                    <td>0 GB</td>
+                                </tr>
+
+                                <tr>
+                                    <td>RAM</td>
+                                    <td>512 MB</td>
+                                </tr>
+                            </table>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+
+                </div>            
+
+            </div>  
+        </div>
+        <div class="tab-pane fade" id="tab3">
+        c
+        </div>
+        <div class="tab-pane fade" id="tab4">
+        d
+        </div>
+    </div><!-- :tab-content -->
+
+    </form>
+    <!-- :form -->
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-success">Lanuch</button>  
+</div>
+
+<script type="text/javascript">
+
+function megaCalc(size){
+    if(size <= 1024) {
+        return size + " MB";
+    } else {
+        size = size/1024;
+        return size + " GB"
+    }
+}
+
+
+function bindData(data){
+    var pos = $("#flavor-content tr:first");
+
+    $("td:first-child", pos).next("td").html($("#flavor option:selected").val());
+    $("td:first-child", pos=pos.next("tr")).next("td").html(data.vcpu);
+    $("td:first-child", pos=pos.next("tr")).next("td").html(megaCalc(data.root_disk));
+    $("td:first-child", pos=pos.next("tr")).next("td").html(megaCalc(data.ephemeral_disk));
+    $("td:first-child", pos=pos.next("tr")).next("td").html(megaCalc(data.root_disk + data.ephemeral_disk));
+    $("td:first-child", pos=pos.next("tr")).next("td").html(data.ram);
+}
+
+function getJson(url){
+
+    $.ajax({
+        mimeType: 'application/json; charset=utf-8', // ! Need set mimeType only when run from local file
+        url: url,
+        type: 'GET',
+        success: function(data) {
+            bindData(data);
+            console.log(data.ephemeral_disk);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        },
+        dataType: "json",
+        async: false
+    });
+
+}
+
+$("#flavor").change(function(){
+    getJson("/src/json/flavor.php?flavor=" + $(this).val());
+    console.log($(this).val()); 
+});
+
+
+$( document ).ready(function() {
+    $('.modal-dialog').addClass('modal-lg');
+    $("#flavor").attr('selectedIndex', 0).trigger('change');
+});
+  
+</script>

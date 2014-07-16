@@ -1,0 +1,16 @@
+{
+
+"groups" : {
+	"available" : [
+			"admin"
+			, "developers"
+			, "users"
+		]
+	,"current" : [
+			"aaaaaa"
+			, "bbbbbb"
+			, "ccccc"
+		]
+}
+
+}

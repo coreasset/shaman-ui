@@ -1,0 +1,49 @@
+{
+    "draw": 1,
+    "recordsTotal": 2000,
+    "recordsFiltered": 2000,
+    "data": [
+		{
+			"serial" : 12345678
+			,"instance_name" : "kkuroo"
+			,"network" : {
+				"ipaddr" : "192.168.100.200"
+				,"gateway" : "192.168.100.1"
+				,"subnet" : "255.255.255.0"
+			}
+			,"size" : {
+				"cpu" : 2
+				,"memory" : 8096
+				,"root_disk" : 20480
+				,"ephemeral_disk" : {
+					"hda" : 20480,
+					"hdb" : 20480
+				}
+			}
+			,"status" : "abc"
+			,"task" : "abc"
+			,"power_state" : "abc"
+		}
+		,{
+			"serial" : 12345678
+			,"instance_name" : "kkuru"
+			,"network" : {
+				"ipaddr" : "192.168.100.200"
+				,"gateway" : "192.168.100.1"
+				,"subnet" : "255.255.255.0"
+			}
+			,"size" : {
+				"cpu" : 2
+				,"memory" : 8096
+				,"root_disk" : 20480
+				,"ephemeral_disk" : {
+					"hda" : 20480,
+					"hdb" : 20480
+				}
+			}
+			,"status" : "abd"
+			,"task" : "abd"
+			,"power_state" : "abd"
+		}		
+    ]
+}

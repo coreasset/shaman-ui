@@ -1,0 +1,26 @@
+{
+	"users" : [
+		{
+			"serial" : 12345678,
+			"user_name" : "kkuroo",
+			"email" : "kkuroo@gmail.com",
+			"enabled" : true,
+			"groups" : [
+				"admin",
+				"developer",
+				"user"
+			],
+			"keys" : "N/A"
+		}
+		,{
+			"serial" : 12345678,
+			"user_name" : "kkuru",
+			"email" : "kkuru@naver.com",
+			"enabled" : false,
+			"groups" : [
+				"admin"
+			],
+			"keys" : "N/A"
+		}	
+	]
+}

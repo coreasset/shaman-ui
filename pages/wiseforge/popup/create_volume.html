@@ -1,0 +1,67 @@
+<style type="text/css">
+.vline-left {
+    border-left: solid 1px #ddd;
+    padding-left: 20px;
+}
+
+.margin-left-20 {
+    margin-left: 20px;
+}
+
+.first-column-bold tr > td:first-child {
+    font-weight: bold;
+    width: 50%;
+}
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Create Volume</h4>
+</div>
+<div class="modal-body">
+    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
+        <div class="row">
+            <div class="col-xs-6" style="padding-right:40px">
+                <div class="form-group">
+                    <label class="control-label"> Description</label>
+                    <textarea class="form-control" rows=5 placeholder="Additional information here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Size (GB)</label>
+                    <input type="text" name="user_name" class="form-control" placeholder="">
+                </div>
+            </div>
+
+            <div class="col-xs-6 vline-left">
+                <h4 class="page-header">Volume Quotas</h4>
+
+                <h5>Total Gigabytes (0 GB)</h5>
+                <p class="available-text">1,000 GB Available</p>
+                <div class="progress sm progress-striped">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                        <span class="sr-only">20% Complete</span>
+                    </div>
+                </div>
+
+                <h5>Number of Volumes (0)</h5>
+                <p class="available-text">10 Available</p>
+                <div class="progress sm progress-striped">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                        <span class="sr-only">20% Complete</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <!-- :form -->
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <button type="submit" class="btn btn-success">Create Volume</button>  
+</div>
+
+<script type="text/javascript">
+    // $('.modal-dialog').addClass('modal-lg');
+</script>

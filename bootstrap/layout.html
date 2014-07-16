@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<style type="text/css">
+div {
+  background-color: #eee;
+}
+
+section {
+  background-color: #ddd;
+}
+
+.box {
+  float: left;
+  width: 200px;
+  height: 100px;
+  margin: 1em;
+}
+
+.after-box {
+	clear: left;
+}
+
+.bg-white {
+	background-color: #fff
+}
+.bg-gray {
+	background-color: #aaa
+}
+
+img {
+	float: right;
+	margin: 0 0 1em 1em;
+}
+	</style>
+</head>
+<body>
+<div class="box"><img src="a.png">나랏말ᄊᆞ미 中듀ᇰ國귁에 달아 文문字ᄍᆞᆼ와로 서르 ᄉᆞᄆᆞᆺ디 아니ᄒᆞᆯᄊᆡ 이런 </div>
+<section>이 경우 section 엘리먼트는 실제로 div 다음에 있습니다. 하지만 div가 왼쪽으로 떠 있기 때문에 이런 결과가 나타난 것입니다. 즉, section 안의 텍스트가 div 주위에 떠 있고 section이 전체를 감싸고 있습니다. section을 실제로 떠 있는 엘리먼트 다음에 나타나게 하려면 어떻게 해야 할까요?</section>
+<hr/>
+<div class="bg-gray" style="height:200px"></div>
+<div class="box">마치 떠 있는 것만 같아요!</div>
+<section class="after-box">이 경우 section 엘리먼트는 실제로 div 다음에 있습니다. 하지만 div가 왼쪽으로 떠 있기 때문에 이런 결과가 나타난 것입니다. 즉, section 안의 텍스트가 div 주위에 떠 있고 section이 전체를 감싸고 있습니다. section을 실제로 떠 있는 엘리먼트 다음에 나타나게 하려면 어떻게 해야 할까요?</section>
+<hr/>
+</html>

@@ -1,0 +1,146 @@
+<style type="text/css">
+.vline-left {
+    border-left: solid 1px #ddd;
+    padding-left: 20px;
+}
+
+.margin-left-20 {
+    margin-left: 20px;
+}
+
+.first-column-bold tr > td:first-child {
+    font-weight: bold;
+    width: 50%;
+}
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Build Configuration</h4>
+</div>
+<div class="modal-body">
+    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
+        <div class="row">
+            <div class="col-xs-6" style="padding-right:40px">
+                <div class="row">
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">* Instance Name</label>
+                    <div class="col-xs-8">
+                        <input type="text" name="userid" class="form-control" placeholder="Instance name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">Flavor</label>
+                    <div class="col-xs-8">
+                        <select id="flavor" class="form-control"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">Image Name</label>
+                    <div class="col-xs-8">
+                    <select id="image" class="form-control"></select>
+                    </div>
+                </div>           
+                </div>     
+            </div>
+            <div class="col-xs-6 vline-left">
+                <p>
+                Specify the details for launching an instance.
+                </p>
+                the chart below shows the resources userd by this project in relatioin to the project's quotas.
+                <h4 class="page-header">
+                Flavor Details
+                </h4>
+
+            <div class="box box-success">
+                <div class="box-body no-padding">
+                    <table id="flavor_detail" class="table table-striped first-column-bold">
+                        <tr>
+                            <td>Name</td>
+                            <td id="favor_name"></td>
+                        </tr>
+
+                        <tr>
+                            <td>vCPUs</td>
+                            <td id="cpu"></td>
+                        </tr>
+                        <tr>
+                            <td>Root Disk</td>
+                            <td id="root_disk"></td>
+                        </tr>
+                        <tr>
+                            <td>Ephemeral Disk</td>
+                            <td id="ephemeral_disk"></td>
+                        </tr>
+                        <tr>
+                            <td>Total Disk</td>
+                            <td id="total_disk"></td>
+                        </tr>
+
+                        <tr>
+                            <td>RAM</td>
+                            <td id="ram"></td>
+                        </tr>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+            </div>            
+
+        </div>
+    </form>
+    <!-- :form -->
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-success">Lanuch</button>  
+</div>
+
+<script type="text/javascript">
+
+var json_flavors = null;
+
+function bindFlavorDetail(data){
+    var flavor_detail = $("#flavor_detail");
+    flavor_detail.find("#favor_name").html($("#flavor option:selected").val());
+    flavor_detail.find("#cpu").html(data.cpu);
+    flavor_detail.find("#root_disk").html(megaCalc(data.root_disk));
+    flavor_detail.find("#ephemeral_disk").html(megaCalc(data.ephemeral_disk));
+    flavor_detail.find("#total_disk").html(megaCalc(data.root_disk + data.ephemeral_disk));
+    flavor_detail.find("#ram").html(megaCalc(data.ram));
+}
+
+function bindFlavors(data){
+    json_flavors = data.flavors;
+    $.each(data.flavors, function(key, value) {
+        $('#flavor').append(new Option(key, key));
+    });    
+}
+
+function bindImages(data){
+    $.each(data.images, function(key, value) {
+        $('#image').append(new Option(key, value));
+    });    
+}
+
+$("#flavor").change(function(){
+    data = json_flavors[$(this).val()];
+    bindFlavorDetail(data);
+});
+
+$( document ).ready(function() {
+    // change modal size
+    $('.modal-dialog').addClass('modal-lg');
+
+    // init get data
+    handleJson("data/flavors.json", bindFlavors);
+    handleJson("data/images.json", bindImages);
+
+    // flavor default select
+     $("#flavor").attr('selectedIndex', 0).trigger('change');
+});
+
+
+</script>

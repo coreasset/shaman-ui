@@ -1,0 +1,78 @@
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Edit User Groups</h4>
+</div>
+<div class="modal-body">
+    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
+        <div class="row">
+            double click user
+        </div>
+        <div class="form-group">
+            <label class="col-xs-4 control-label">search user & add</label>
+            <div class="col-xs-8 form-inline">
+                <input type="text" id="member_id" class="form-control" placeholder="search username">
+                <button type="submit" class="btn btn-success">Add Member</button>  
+            </div>
+        </div>
+    </form>
+        <div class="row">
+            <div class="col-xs-6">
+                <h3 class="page-header">Group List</h3>
+                <select id="group_list" class="form-control" multiple size="10"></select>
+            </div>
+            <div class="col-xs-6 vline-left">
+                <h3 class="page-header">Member List</h3>
+                <select id="members" class="form-control" multiple size="10"></select>
+            </div>            
+
+        </div>
+    
+    <!-- :form -->
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    
+</div>
+
+<script type="text/javascript">
+function bindGroups(data){
+    $.each(data.groups, function(key, value) {
+        $('#group_list').append(new Option(key, key));
+    });
+}
+
+function bindMembers(data){
+    $('#members').find('option').remove();
+    var current = $('#group_list :selected').val();
+    $.each(data.groups[current], function(key, value) {
+        $('#members').append(new Option(value, value));
+    });
+}
+
+
+$("#defaultForm").submit(function(e){
+    event.preventDefault();
+    var member_id = $("#member_id").val();
+    $('#members').append(new Option(member_id, member_id));
+    $("#member_id").val('');
+});
+
+
+
+$("body").on('dblclick', '#members option', function(e) {
+    $(this).remove();
+});
+
+$("body").on('change', '#group_list', function(e) {
+    handleJson("data/group_users.json", bindMembers);
+});
+
+$( document ).ready(function() {
+    // change modal size
+    $('.modal-dialog').addClass('modal-lg');
+
+    // init get data
+    handleJson("data/group_users.json", bindGroups);
+});
+</script>

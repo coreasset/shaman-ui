@@ -1,0 +1,32 @@
+{
+
+"groups" : [
+		{
+			"group_name" : "administrators"
+			,"users" : 1
+			,"permission" : [
+				"P-abc"
+				, "P-1111"
+				, "P-edit"
+			]
+		}
+		,{
+			"group_name" : "developers"
+			,"users" : 10
+			,"permission" : [
+				"P-abc"
+				, "P-1111"
+				, "P-edit"
+				, "P-delete"
+			]		
+		}
+		,{
+			"group_name" : "users"
+			,"users" : 30
+			,"permission" : [
+				"P-abc"
+			]		
+		}
+	]
+
+}
