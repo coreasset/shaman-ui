@@ -3,10 +3,26 @@
 --------------------------------
 */
 
+/* overwrite bootstrap */
+.progress {
+    margin: 5px;
+}
+
 /* size variation */
+.progress.md {
+    margin: 5px;
+    height: 16px;
+    > .progress-bar {
+        text-align: center;
+        line-height: 15px;
+        
+    }
+}
+
 .progress.sm {
     height: 10px;
 }
+
 .progress.xs {
     height: 7px;
 }
