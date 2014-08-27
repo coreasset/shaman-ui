@@ -1,0 +1,174 @@
+<link rel="stylesheet" href="js/plugins/select2/select2.css">
+<link href="js/plugins/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="js/plugins/select2/select2.js"></script>
+<form id="modalForm" class="form-horizontal">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Create New Project Group</h4>
+</div>
+<div class="modal-body">
+        <div class="col-xs-12">
+            <h4 class="page-header">
+            Project Group Detail
+            </h4>
+            <p>
+            복수의 어플리케이션의 묶음 단위 시스템으로 관리한다.
+            <br><br>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-xs-10 col-offset-1">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">* Group Name</label>
+                        <div class="col-xs-8">
+                            <input type="text" id="name" name="name" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label"> Include Projects</label>
+                        <div class="col-xs-8">
+                            <select id="projects" name="projects" class="form-control" multiple>
+                                <option value="1">a</option>
+                                <option value="2">b</option>
+                                <option value="3">c</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label"> Description</label>
+                        <div class="col-xs-8">
+                            <textarea class="form-control" id="description" name="description" rows=4 placeholder="Additional information here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+    <button type="submit" id="submit" class="btn btn-success">Create</button>
+</div>
+    <input type="text" id="idx" name="idx">
+</form>
+<script type="text/javascript">
+
+function getXHR(url){
+    return $.get(url);
+}
+
+$( document ).ready(function() {
+    $.ajaxSetup({
+        async: false
+    });
+
+    console.log("modal document ready");
+    // change modal size
+    $("#projects").select2({
+        placeholder: "Select Projects"
+    });
+
+    $('#modalForm').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Project Group Name is required and cannot be empty'
+                    }
+                    ,stringLength: {
+                        max: 200,
+                        min: 4,
+                        message: 'The Project Group Name size must be between 4 and 200'
+                    }
+                    ,regexp: {
+                        regexp: /[a-z]+/i,
+                        message: 'The Project Group Name is not only integer'
+                    }
+                    ,callback: {
+                        message: 'The Project Group Name is not available'
+                        ,callback: function(value, validator, $field){
+                            if(/^.{4,200}$/.test(value)) {
+                                var idx = $("#idx").val();
+                                var url = "http://localhost:8080/shaman-api/ProjectGroup/" + value;
+                                response = getXHR(url);
+                                if (response.status == 204) {
+                                    return true;
+                                } else if(response.status == 200) {
+                                    if(idx == parseInt(response.responseJSON.idx)){
+                                        return true;
+                                    }
+                                }
+                            }
+
+                            return false;
+                        }
+                    }
+
+                }
+            }
+        }
+    })
+    .on('success.form.bv', function(e){
+        e.preventDefault();
+        console.log("modalForm submit");
+        var projectGroup = new Object();
+        projectGroup.name = $("#name").val();
+        projectGroup.description = $("#description").val();
+        console.log(JSON.stringify(projectGroup));
+        
+        // var url = "http://localhost:8080/shaman-api/ProjectGroup/hello"
+        var url = "http://localhost:8080/shaman-api/ProjectGroup";
+        var method = 'POST';
+        var data = JSON.stringify(projectGroup);
+        var draw_reset = true;
+
+        //edit url
+        if($("#idx").val()){
+            url += "/" + $("#idx").val();
+            method = 'PUT';
+            draw_reset = false;
+            console.log(url);
+        }
+
+        $.ajax({
+            // mimeType: 'application/json', // ! Need set mimeType only when run from local file
+            contentType: "application/json; charset=utf-8",
+            accept: 'application/json',
+            url: url,
+            type: method,
+            data: data,
+            beforeSend:function(){
+                $(".processing_indicator").show("fast");
+            },
+            complete:function(){
+                $(".processing_indicator").hide("fast");
+            },
+            success: function(data){
+                $('#commonModal').modal('hide');
+                commonDataTable.draw(draw_reset);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            dataType: "json",
+            async: true
+        });
+    });
+});
+
+
+// console.log(projectGroup);
+// $("#submit").click(function(event){
+// $('#modalForm').bind('submit',function(e) {
+
+//     return false;
+// });
+
+
+</script>

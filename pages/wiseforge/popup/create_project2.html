@@ -1,0 +1,155 @@
+<style type="text/css">
+.margin-left-20 {
+    margin-left: 20px;
+}
+.first-column-bold tr > td:first-child {
+    font-weight: bold;
+    width: 50%;
+}
+</style>
+<link rel="stylesheet" href="js/plugins/select2/select2.css">
+<link href="js/plugins/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="js/plugins/select2/select2.js"></script>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Create Project</h4>
+</div>
+<div class="modal-body">
+    
+        <div class="col-xs-12">
+            <h4 class="page-header">
+            Project Detail
+            </h4>
+            <p>
+            복수의 어플리케이션의 묶음 단위 시스템으로 관리한다.
+            <br><br>
+            </p>
+        </div>
+
+                    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_1" data-toggle="tab">Project Info</a></li>
+                        <li class=""><a href="#tab_2" data-toggle="tab">Repository Info</a></li>
+                        <li class=""><a href="#tab_3" data-toggle="tab">Build Info</a></li>
+                    </ul>
+                    <br>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="tab_1">
+
+                            <div class="form-group">
+                                <label class="col-xs-4 control-label">* System</label>
+                                <div class="col-xs-8">
+                                    <select id="system" class="form-control" multiple>
+                                        <option value="1">주문</option>
+                                        <option value="2">단품</option>
+                                        <option value="3">회원</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-xs-4 control-label">* Project Name</label>
+                                <div class="col-xs-8">
+                                    <input type="text" name="system_name" class="form-control" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-xs-4 control-label">* Project Owner</label>
+                                <div class="col-xs-8">
+                                    <select id="project_owner" class="form-control" multiple>
+                                        <option value="AL">Alabama</option>
+                                        <option value="WY">Wyoming</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-4 control-label"> Description</label>
+                                <div class="col-xs-8">
+                                    <textarea class="form-control" rows=4 placeholder="Additional information here..."></textarea>
+                                </div>
+                            </div>
+                        </div><!-- /.tab-1-pane -->
+
+                        <div class="tab-pane" id="tab_2">
+                            <div class="form-group">
+                                <label class="col-xs-4 control-label">* Repository</label>
+                                <div class="col-xs-2 padding-right-zero">
+                                    <select class="form-control">
+                                      <option>svn</option>
+                                      <option>git</option>
+                                    </select>                            
+                                </div>
+                                <div class="col-xs-6">
+                                    <input type="text" name="system_name" class="form-control" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-xs-4 control-label">* Credential</label>
+                                <div class="col-xs-3 padding-right-zero">
+                                    <select class="form-control">
+                                      <option>ID/PWD</option>
+                                      <option>Select Credential</option>
+                                    </select>                            
+                                </div>
+                                <div class="col-xs-5">
+                                    <input type="text" name="system_name" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                        </div><!-- /.tab-2-pane -->
+
+                        <div class="tab-pane" id="tab_3">
+                            <div class="form-group">
+                                <label class="col-xs-4 control-label">* Artifact</label>
+                                <div class="col-xs-3 padding-right-zero">
+                                    <input type="text" name="system_name" class="form-control" placeholder="Group ID">
+                                </div>
+                                <div class="col-xs-3 padding-right-zero">
+                                    <input type="text" name="system_name" class="form-control" placeholder="Artifact ID">
+                                </div>
+                                <div class="col-xs-2">
+                                    <input type="text" name="system_name" class="form-control" placeholder="Package">
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <label class="col-xs-4 control-label">* Default Build Profile</label>
+                                <div class="col-xs-8">
+                                    <label>
+                                  <select class="form-control">
+                                      <option>None</option>
+                                      <option>mvn_compile_default</option>
+                                      <option>mvn_unittest_default</option>
+                                      <option>mvn_install_default</option>
+                                      <option>mvn_deploy_default</option>
+                                    </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div><!-- /.tab-3-pane -->
+                    </div><!-- /.tab-content -->
+                    </form>
+
+    <!-- :form -->
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+    <button type="submit" class="btn btn-success">Create</button>
+</div>
+<script type="text/javascript">
+$( document ).ready(function() {
+    // change modal size
+    $('.modal-dialog').addClass('modal-lg');
+
+    $("#system").select2({
+        placeholder: "Select System"
+    });
+
+    $("#project_owner").select2({
+        placeholder: "User Search"
+    });
+});
+</script>

@@ -1,0 +1,213 @@
+<style type="text/css">
+.dl-horizontal dt {
+    width: 120px;
+}
+.dl-horizontal dd {
+    margin-left: 130px;
+    margin-right: 10px;
+}
+.dl-horizontal dt, .dl-horizontal dd {
+    padding-bottom: 10px;
+}
+</style>
+<link rel="stylesheet" href="js/plugins/select2/select2.css">
+<link href="js/plugins/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="js/plugins/select2/select2.js"></script>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Project Build</h4>
+</div>
+<div class="modal-body">
+
+
+
+<div class="row">
+                <div class="col-xs-6">
+                    <div class="underline">
+                        <h3 class="page-header">Build Config
+                        <small>The settings below configure an LDAP directory which will </small>
+                        </h3>
+                    </div>
+
+                <form class="form-horizontal" role="form">
+                    <div class="form-group"> 
+                        <label class="col-xs-4 control-label">Target Branch</label>
+                        <div class="col-xs-8">
+                            <label>
+                              <select class="form-control input-sm">
+                                  <option>trunk</option>
+                                  <option>branches/3.1.1.RELEASE</option>
+                                  <option>branches/issue-310</option>
+                                  <option>tags/0.0.1</option>
+                                  <option>tags/1.0.1</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group"> 
+                        <label class="col-xs-4 control-label">Build Profile</label>
+                        <div class="col-xs-8">
+                            <label>
+                              <select id="build_prifile" class="form-control input-sm">
+                                  <option>None</option>
+                                  <option selected>mvn_compile_default</option>
+                                  <option>mvn_unittest_default</option>
+                                  <option>mvn_install_default</option>
+                                  <option>mvn_deploy_default</option>
+                                  
+                                </select>
+
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Flavor</label>
+                        <div class="col-xs-8">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="flavor" value="ant" checked>
+                                   Ant
+                                </label>
+                                <label>
+                                    <input type="radio" name="flavor" value="mvn">
+                                    Maven
+                                </label>
+                                <label>
+                                    <input type="radio" name="flavor" value="gradle">
+                                    Gradle
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="set_build">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Goal</label>
+                            <div class="col-xs-8">
+                                <label>
+                                <select id="goal" name="goal" class="form-control  input-sm">
+                                    <option value="compile" selected>compile</option>
+                                    <option value="unit_test">unit test</option>
+                                    <option value="install">install</option>
+                                    <option value="deploy">deploy</option>
+                                    <option value="user_mode">직접 입력</option>
+                                </select>
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Additional arg</label>
+                            <div class="col-xs-8">
+                                <input type="text" id="add_arg" class="form-control  input-sm" placeholder="Additional Arguments...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">Static Analysis</label>
+                            <div class="col-xs-8">
+                                <div class="checkbox">
+                                    <input type="checkbox" name="analysis" id="analysis">
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-4 control-label">Build Command</label>
+                        <div class="col-xs-8">
+                            <textarea id="build_command" class="form-control" rows=3 placeholder="" readonly style="font-family:Courier New; font-weight:bold;"></textarea>
+                            <button type="button" id="user_mode_cancel" class="btn btn-sm btn-success pull-right" style="margin-top:5px">Cancel</button>
+                        </div>
+                    </div>
+
+                </form>
+                </div><!-- :first column -->
+
+                <div class="col-xs-6">
+                    <div class="underline">
+                        <h3 class="page-header">Build Info
+                        <small>The settings below configure an LDAP directory which will </small>
+                        </h3>
+                    </div>
+
+                    <dl class="dl-horizontal">
+                        <dt>System</dt>
+                        <dd>
+                            <small class="badge bg-green">Order</small>
+                            <small class="badge bg-green">Project</small>
+                            <small class="badge bg-green">Front</small>
+                        </dd>
+
+                        <dt>Project Name</dt>
+                        <dd>org.springframework.mail</dd>
+
+                        <dt>Project Owner</dt>
+                        <dd>Etiam porta sem</dd>
+
+                        <dt>Description</dt>
+                        <dd>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</dd>
+
+                        <dt>Export Package</dt>
+                        <dd>org.springframework.mail-3.1.1.RELEASE.war</dd>
+
+                        <dt>Branch</dt>
+                        <dd><small class="badge bg-green">branches/3.1.1.RELEASE</small></dd>
+
+                        <dt>Build Profile</dt>
+                        <dd>
+                            <small class="badge bg-green">mvn_basic_compile or None</small>
+                        </dd>
+
+                    </dl>
+                </div><!-- :second column -->
+</div>
+</div><!-- :modal body -->
+
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+    <button type="submit" class="btn btn-success">Build</button>
+</div>
+<script type="text/javascript">
+
+$( document ).ready(function() {
+    // change modal size
+    $('.modal-dialog').addClass('modal-lg');
+
+    $("#system").select2({
+        placeholder: "Select System"
+    });
+
+    $("#project_owner").select2({
+        placeholder: "User Search"
+    });
+
+
+    $("#user_mode_cancel").hide();
+
+    $("#goal").change(function(){
+        if($(this).val() == "user_mode"){
+            $("#set_build").hide();
+            $('#build_command').prop('readonly', false);
+            $('#build_command').prop('placeholder', "Here, write build command...");
+            $('#build_command').focus();
+            $("#user_mode_cancel").show();
+        }
+    });
+
+    $("#user_mode_cancel").click(function(){
+        $('#build_command').prop('readonly', true);
+        $("#set_build").show();
+        $("#goal").val("compile");
+        $('#build_command').prop('placeholder', "");
+        $(this).hide();
+    });
+}); //end document ready
+</script>

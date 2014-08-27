@@ -1,0 +1,174 @@
+<style type="text/css">
+.vline-left {
+    border-left: solid 1px #ddd;
+    padding-left: 20px;
+}
+
+.margin-left-20 {
+    margin-left: 20px;
+}
+
+.first-column-bold tr > td:first-child {
+    font-weight: bold;
+    width: 50%;
+}
+</style>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Create Build Profile</h4>
+</div>
+<div class="modal-body">
+    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
+        <div class="row" style="padding-right: 20px">
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">* Profile Name</label>
+                        <div class="col-xs-9">
+                            <input type="text" name="userid" class="form-control" placeholder="project name...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">Flavor</label>
+                        <div class="col-xs-9">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="flavor" value="ant" checked>
+                                   Ant
+                                </label>
+                                <label>
+                                    <input type="radio" name="flavor" value="mvn">
+                                    Maven
+                                </label>
+                                <label>
+                                    <input type="radio" name="flavor" value="gradle">
+                                    Gradle
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="set_build">
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">Goal</label>
+                            <div class="col-xs-9">
+                                <label>
+                                <select id="goal" name="goal" class="form-control">
+                                    <option value="compile" selected>compile</option>
+                                    <option value="unit_test">unit test</option>
+                                    <option value="install">install</option>
+                                    <option value="deploy">deploy</option>
+                                    <option value="user_mode">직접 입력</option>
+                                </select>
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">Add Options</label>
+                            <div class="col-xs-9">
+                                <input type="text" id="add_arg" class="form-control" placeholder="Additional Arguments...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">Static Analysis</label>
+                            <div class="col-xs-9">
+                                <div class="checkbox">
+                                    <input type="checkbox" name="analysis" id="analysis">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label"> Command Result</label>
+                        <div class="col-xs-9">
+                            <textarea id="build_command" class="form-control" rows=3 placeholder="" readonly style="font-family:Courier New; font-weight:bold;"></textarea>
+
+                            <button type="button" id="user_mode_cancel" class="btn btn-sm btn-success pull-right" style="margin-top:5px">Cancel</button>
+                        </div>
+                    </div>  
+
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label"> Description</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" rows=3 placeholder="Additional information here..."></textarea>
+                        </div>
+                    </div>
+
+        </div>
+    </form>
+    <!-- :form -->
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-success">Create</button>
+</div>
+
+<script type="text/javascript">
+
+function makeBuildCommand(){
+    var cmd_template = "{flavor} {goal} {add_arg} {analysis}";
+    var cmd = "";
+    cmd = cmd_template.replace("{flavor}", $("input[name*='flavor']:checked").val());
+    cmd = cmd.replace("{goal}", $("#goal").val());
+    cmd = cmd.replace("{add_arg}", $("#add_arg").val());
+    cmd = cmd.replace("{add_arg}", "");
+    if ($("#analysis").is(":checked")){
+        cmd = cmd + " -Danalysis=true";
+    }
+    cmd = cmd.replace("{analysis}", "");
+    $("#build_command").val(cmd);
+    console.log(cmd);
+}
+
+$( document ).ready(function() {
+    $("#goal").change(function(){
+        if($(this).val() == "user_mode"){
+            $("#set_build").hide();
+            $('#build_command').prop('readonly', false);
+            $('#build_command').prop('placeholder', "Here, write build command...");
+            $('#build_command').focus();
+            $("#user_mode_cancel").show();
+        }
+    });
+
+    $("#user_mode_cancel").click(function(){
+        $('#build_command').prop('readonly', true);
+        $("#set_build").show();
+        $("#goal").val("compile");
+        $('#build_command').prop('placeholder', "");
+        $(this).hide();
+    });
+
+
+    // change modal size
+    $('.modal-dialog').addClass('modal-md');
+
+    $("#user_mode_cancel").hide();
+    makeBuildCommand();
+
+    $("input[name*='flavor']").on('ifChecked', function(event){
+        makeBuildCommand();
+    });
+
+    $("#goal").change(function(){
+        if($(this).val() != "user_mode"){
+            makeBuildCommand();
+        }
+    });
+
+    $("#add_arg").keyup(function(e){
+        makeBuildCommand();
+    });
+
+    $('#analysis').on('ifToggled', function(event){
+        makeBuildCommand();
+    });
+
+}); // end document ready
+
+</script>

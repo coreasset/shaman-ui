@@ -1,238 +1,198 @@
 <style type="text/css">
-.vline-left {
-    border-left: solid 1px #ddd;
-    padding-left: 20px;
-}
-
 .margin-left-20 {
     margin-left: 20px;
 }
-
 .first-column-bold tr > td:first-child {
     font-weight: bold;
     width: 50%;
 }
-
-.nav-tabs {
-    margin-bottom: 20px;
-}
 </style>
+<link rel="stylesheet" href="js/plugins/select2/select2.css">
+<link href="js/plugins/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="js/plugins/select2/select2.js"></script>
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Create Project</h4>
 </div>
-
 <div class="modal-body">
-    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
 
-<div class="wrapper row-offcanvas row-offcanvas-left">
+               
+        <div class="row" style="padding:0px 20px 0px 30px">
 
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab1" data-toggle="tab">Project Info</a></li>
-        <li><a href="#tab2" data-toggle="tab">Project Members</a></li>
-        <li><a href="#tab3" data-toggle="tab">Project Groups</a></li>
-        <li><a href="#tab4" data-toggle="tab">Quota*</a></li>
-    </ul>
-
-    <div id='content' class="tab-content">
-        <div class="tab-pane fade in active" id="tab1">
-        
-            <div class="row">
-                <div class="col-xs-6" style="padding-right:40px">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Domain ID</label>
-                            <div class="col-xs-8">
-                                <input type="text" name="userid" class="form-control" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Domain Name</label>
-                            <div class="col-xs-8">
-                                <input type="text" name="userid" class="form-control" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">* Name</label>
-                            <div class="col-xs-8">
-                                <input type="text" name="userid" class="form-control" placeholder="Project name">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label"> Description</label>
-                            <div class="col-xs-8">
-                                <textarea class="form-control" placeholder="Additional information here..."></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Enable </label>
-                            <div class="col-xs-8">
-                                <input type="checkbox">
-                            </div>
-                        </div>                        
-                    </div>    
+                <div class="underline">
+                    <h3 class="page-header">Project Info
+                    <small>
+                The settings below configure an LDAP directory which will be regularly </small></h3>
                 </div>
-                <div class="col-xs-6 vline-left container" style="height:100%">
-                    <p>
-                    From Here you can create a new project to organize users.
-                    </p>
 
-                </div>            
-
-            </div>  
-        </div>
-        <div class="tab-pane fade" id="tab2">
-            <p>From here you add and remove members to this project from the list of all available users.
-            </p>
-            <div class="row">
-                <div class="col-xs-6" style="padding-right:40px">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Domain ID</label>
-                            <div class="col-xs-8">
-                                <input type="text" name="userid" class="form-control" placeholder="">
-                            </div>
+                <form class="form-horizontal" role="form" style="margin:10px">
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">* System</label>
+                        <div class="col-xs-9">
+                            <select id="systems" class="form-control" multiple>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Domain Name</label>
-                            <div class="col-xs-8">
-                                <input type="text" name="userid" class="form-control" placeholder="">
-                            </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">* Project Name</label>
+                        <div class="col-xs-9">
+                            <input type="text" name="system_name" class="form-control" placeholder="">
                         </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">* Name</label>
-                            <div class="col-xs-8">
-                                <input type="text" name="userid" class="form-control" placeholder="Project name">
-                            </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">* Project Owner</label>
+                        <div class="col-xs-9">
+                            <select id="project_owner" class="form-control" multiple>
+                                <option value="AL">cwpark</option>
+                                <option value="WY">gwkoo</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label"> Description</label>
-                            <div class="col-xs-8">
-                                <textarea class="form-control" placeholder="Additional information here..."></textarea>
-                            </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label"> Description</label>
+                        <div class="col-xs-9">
+                            <textarea class="form-control" rows=4 placeholder="Additional information here..."></textarea>
                         </div>
-                        <div class="form-group">
-                            <label class="col-xs-4 control-label">Enable </label>
-                            <div class="col-xs-8">
-                                <input type="checkbox">
+                    </div>
+
+                    <div class="underline">
+                        <h3 class="page-header">Repository & Build
+                        <small>
+                    The settings below configure an LDAP directory which will be regularly </small></h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">Source Code Repository</label>
+                        <div class="col-xs-2 padding-right-zero">
+                            <select class="form-control">
+                              <option>svn</option>
+                              <option>git</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-7">
+                            <input type="text" name="system_name" class="form-control" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">Authentication</label>
+                        <div class="col-xs-9">
+                            <label class="form-inline">
+                            <select id="credential" class="form-control" style="width:300px">
+                                <option>None</option>
+                            </select>
+                            <button type="button" class="btn btn-sm btn-success">New Credential</button>
+                            <div id="credential_desc">
+                            Description
+                            <pre><code></code></pre>
                             </div>
-                        </div>                        
-                    </div>     
-                </div>
-                <div class="col-xs-6 vline-left">
-                    <p>
-                    Specify the details for launching an instance.
-                    </p>
-                    the chart below shows the resources userd by this project in relatioin to the project's quotas.
-                    <h4 class="page-header">
-                    Flavor Details
-                    </h4>
+                            </label>
+                        </div>
+                    </div>
 
-                    <div class="box box-success">
-                        <div class="box-body no-padding">
-                            <table id="flavor-content" class="table table-striped first-column-bold">
-                                <tr>
-                                    <td>Name</td>
-                                    <td>m1.tiny</td>
-                                </tr>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">Artifact</label>
+                        <div class="col-xs-3 padding-right-zero">
+                            <input type="text" name="group_id" class="form-control" placeholder="Group ID">
+                        </div>
+                        <div class="col-xs-3 padding-right-zero">
+                            <input type="text" name="artifact_id" class="form-control" placeholder="Artifact ID">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" name="package" class="form-control" placeholder="Package">
+                        </div>
+                    </div>
 
-                                <tr>
-                                    <td>vCPUs</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>Root Disk</td>
-                                    <td>9 GB</td>
-                                </tr>
-                                <tr>
-                                    <td>Ephemeral Disk</td>
-                                    <td>0 GB</td>
-                                </tr>
-                                <tr>
-                                    <td>Total Disk</td>
-                                    <td>0 GB</td>
-                                </tr>
+                    <div class="form-group"> 
+                        <label class="col-xs-3 control-label">Default Build Profile</label>
+                        <div class="col-xs-9">
+                            <label>
+                                <select id="build_profile" class="form-control" style="width:300px">
+                                    <option>None</option>
+                                </select>
 
-                                <tr>
-                                    <td>RAM</td>
-                                    <td>512 MB</td>
-                                </tr>
-                            </table>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
+                                <div id="build_profile_command" style="padding-top:5px">
+                                build command
+                                <pre><code></code></pre>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-                </div>            
-
-            </div>  
-        </div>
-        <div class="tab-pane fade" id="tab3">
-        c
-        </div>
-        <div class="tab-pane fade" id="tab4">
-        d
-        </div>
-    </div><!-- :tab-content -->
-
-    </form>
     <!-- :form -->
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-success">Lanuch</button>  
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+    <button type="submit" class="btn btn-success">Create</button>
 </div>
-
 <script type="text/javascript">
+$( document ).ready(function() {
+    // change modal size
+    $('.modal-dialog').addClass('modal-lg');
 
-function megaCalc(size){
-    if(size <= 1024) {
-        return size + " MB";
-    } else {
-        size = size/1024;
-        return size + " GB"
-    }
-}
-
-
-function bindData(data){
-    var pos = $("#flavor-content tr:first");
-
-    $("td:first-child", pos).next("td").html($("#flavor option:selected").val());
-    $("td:first-child", pos=pos.next("tr")).next("td").html(data.vcpu);
-    $("td:first-child", pos=pos.next("tr")).next("td").html(megaCalc(data.root_disk));
-    $("td:first-child", pos=pos.next("tr")).next("td").html(megaCalc(data.ephemeral_disk));
-    $("td:first-child", pos=pos.next("tr")).next("td").html(megaCalc(data.root_disk + data.ephemeral_disk));
-    $("td:first-child", pos=pos.next("tr")).next("td").html(data.ram);
-}
-
-function getJson(url){
-
-    $.ajax({
-        mimeType: 'application/json; charset=utf-8', // ! Need set mimeType only when run from local file
-        url: url,
-        type: 'GET',
-        success: function(data) {
-            bindData(data);
-            console.log(data.ephemeral_disk);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
-        },
-        dataType: "json",
-        async: false
+    
+    $.getJSON("data/wiseforge/systems_tiny.json", {}, function(data, textStatus, jqXHR){
+        $.each(data.data, function(index, value){
+            $("#systems").append("<option value=" + value.idx + ">" + value.name + "</option>");
+        });
+    });
+    $("#systems").select2({
+        placeholder: "Select System"
     });
 
-}
+    $("#project_owner").select2({
+        placeholder: "User Search"
+    });
 
-$("#flavor").change(function(){
-    getJson("/src/json/flavor.php?flavor=" + $(this).val());
-    console.log($(this).val()); 
-});
+    // init credential
+    $("#credential_desc").hide();
+    $("#credential").select2({
+        placeholder: "Credential Search"
+        ,allowClear: true
+    }).on("select2-selecting", function(event) {
+        if(event.val == "None") {
+                $("#credential_desc").hide();
+        } else {
+            $.getJSON("data/wiseforge/credential_desc_tiny.json", {"idx":event.val}, function(data, textStatus, jqXHR){
+                $("#credential_desc code").text(data.data.desc);
+                $("#credential_desc").show();
+            });
+        }
+    });
+    $.getJSON("data/wiseforge/credentials_tiny.json", {}, function(data, textStatus, jqXHR){
+        $.each(data.data, function(index, value){
+            $("#credential").append("<option value=" + value.idx + ">" + value.name + "</option>");
+        });
+    });
 
 
-$( document ).ready(function() {
-    $('.modal-dialog').addClass('modal-lg');
-    $("#flavor").attr('selectedIndex', 0).trigger('change');
-});
-  
+
+    // init build_prifile
+    $("#build_profile_command").hide();
+    $("#build_profile").select2({
+        placeholder: "Build Profile Search"
+        ,allowClear: true
+    }).on("select2-selecting", function(event) {
+        if(event.val == "None") {
+                $("#build_profile_command").hide();
+        } else {
+            $.getJSON("data/wiseforge/build_profiles_command_tiny.json", {"idx":event.val}, function(data, textStatus, jqXHR){
+                $("#build_profile_command code").text(data.data.command);
+                $("#build_profile_command").show();
+            });
+        }
+    });
+
+    $.getJSON("data/wiseforge/build_profiles_tiny.json", {}, function(data, textStatus, jqXHR){
+        $.each(data.data, function(index, value){
+            $("#build_profile").append("<option data-command='" + value.command + "' value=" + value.idx + ">" + value.name + "</option>");
+        });
+    });
+}); //end document ready
 </script>

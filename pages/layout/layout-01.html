@@ -1,3 +1,14 @@
+<style type="text/css">
+.row {
+    background-color: #ccc;
+}
+
+[class*="col-"] {
+    border:1px solid black;
+    background-color: #eee;
+}
+</style>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -13,11 +24,55 @@
 
 <!-- Main content -->
 <section class="content">
-    <h2 class="page-header">second header</h2>
-    <h2 class="page-header">second header</h2>
-    <h2 class="page-header">second header</h2>
-    <h2 class="page-header">second header</h2>
-    <h2 class="page-header">second header</h2>
+<h2>aaaaaa</h2>
+<div class="row">
+<div class="col-xs-6">1</div>
+<div class="col-xs-6">
+<div class="row">
+    <div class="col-xs-6">2</div>
+    <div class="col-xs-6">3</div>
+    <div class="">4</div>
+</div>
+</div>
+</div>
+
+<h2>aaaaaa</h2>
+<div class="row">
+<div class="col-xs-6">1</div>
+<div class="col-xs-6">
+<div class="row">
+    <div class="col-xs-6">2</div>
+    <div class="col-xs-6">3</div>
+    <div class="col-xs-12">4</div>
+</div>
+</div>
+</div>
+
+
+<br><br>
+<div class="row">
+    <div class="col-md-5">Span 5</div>
+    <div class="col-md-3">Span 3<br />second line</div>
+    <div class="col-md-2">
+        <div class="row">
+            <div class="col-md-12">Span 2</div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">Span 2</div>
+        </div>
+    </div>
+    <div class="col-md-2">Span 2</div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">Span 6</div>
+            <div class="col-md-12">Span 6</div>
+        </div>
+    </div>
+    <div class="col-md-6">Span 6</div>
+</div>
+
 </section>
 
 

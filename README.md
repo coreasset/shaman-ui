@@ -3,10 +3,6 @@
 
 **AdminLTE** -- is a fully responsive admin template. Based on **Bootstrap 3** framework. Highly customizable and easy to use. Fits many screen resolutions from small mobile devices to large desktops. Check out the live preview now and see for yourself. 
 
-원래 fully reponsive 였으나, 현재 템플릿에서는 reponsive를 고려하지 않음
-
-**Demo Page: http://kkuru.net/html/AdminLTE/**
-
 **Live Preview: http://almsaeedstudio.com/preview/**
 
 Note: If the javascript in the preview does not work properly (specially IE users), please visit http://almsaeedstudio.com/AdminLTE (this could be because of the use of an iframe!)
@@ -15,8 +11,10 @@ Want More?
 -----------
 **Almsaeed studio just opened a new premium templates page. Hand picked to insure the best quality and the most affordable prices. Visit http://almsaeedstudio.com/premium for more information.**
 
-AdminLTE 무료 템플릿을 이용하여 개발자 수준에서 최고의? Front Desing 퀄리티를 뽑기위해 사용
 
+![preview image](http://almsaeedstudio.com/adminlte.png "AdminLTE Presentation")
+
+**AdminLTE** has been carefully coded with clear comments in all of its JS, LESS and HTML files. LESS has been used to increase code customizability.
 
 Announcements:
 --------------
@@ -44,7 +42,6 @@ Featured Pages:
 - 404 Error
 - 500 Error
 - Blank page
-- etc...
 
 Featured Plugins:
 -----------------
@@ -99,7 +96,6 @@ To Do List:
 - Ajax version
 - More skins
 - Documentation
-- loading indicator? 
 
 Image Credits:
 --------------
