@@ -1,140 +1,225 @@
-<style type="text/css">
-.margin-left-20 {
-    margin-left: 20px;
-}
-.first-column-bold tr > td:first-child {
-    font-weight: bold;
-    width: 50%;
-}
-</style>
 <link rel="stylesheet" href="js/plugins/select2/select2.css">
 <link href="js/plugins/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
 <script src="js/plugins/select2/select2.js"></script>
 
+<form id="modalForm" class="form-horizontal">
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Create Project</h4>
 </div>
 <div class="modal-body">
+    <div class="row" style="padding:0px 20px 0px 30px">
+        <div class="underline">
+            <h3 class="page-header">Project Info
+            <small>
+        The settings below configure an LDAP directory which will be regularly </small></h3>
+        </div>
 
-               
-        <div class="row" style="padding:0px 20px 0px 30px">
-
-                <div class="underline">
-                    <h3 class="page-header">Project Info
-                    <small>
-                The settings below configure an LDAP directory which will be regularly </small></h3>
-                </div>
-
-                <form class="form-horizontal" role="form" style="margin:10px">
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">* System</label>
-                        <div class="col-xs-9">
-                            <select id="systems" class="form-control" multiple>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">* Project Name</label>
-                        <div class="col-xs-9">
-                            <input type="text" name="system_name" class="form-control" placeholder="">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">* Project Owner</label>
-                        <div class="col-xs-9">
-                            <select id="project_owner" class="form-control" multiple>
-                                <option value="AL">cwpark</option>
-                                <option value="WY">gwkoo</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label"> Description</label>
-                        <div class="col-xs-9">
-                            <textarea class="form-control" rows=4 placeholder="Additional information here..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="underline">
-                        <h3 class="page-header">Repository & Build
-                        <small>
-                    The settings below configure an LDAP directory which will be regularly </small></h3>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">Source Code Repository</label>
-                        <div class="col-xs-2 padding-right-zero">
-                            <select class="form-control">
-                              <option>svn</option>
-                              <option>git</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-7">
-                            <input type="text" name="system_name" class="form-control" placeholder="">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">Authentication</label>
-                        <div class="col-xs-9">
-                            <label class="form-inline">
-                            <select id="credential" class="form-control" style="width:300px">
-                                <option>None</option>
-                            </select>
-                            <button type="button" class="btn btn-sm btn-success">New Credential</button>
-                            <div id="credential_desc">
-                            Description
-                            <pre><code></code></pre>
-                            </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">Artifact</label>
-                        <div class="col-xs-3 padding-right-zero">
-                            <input type="text" name="group_id" class="form-control" placeholder="Group ID">
-                        </div>
-                        <div class="col-xs-3 padding-right-zero">
-                            <input type="text" name="artifact_id" class="form-control" placeholder="Artifact ID">
-                        </div>
-                        <div class="col-xs-3">
-                            <input type="text" name="package" class="form-control" placeholder="Package">
-                        </div>
-                    </div>
-
-                    <div class="form-group"> 
-                        <label class="col-xs-3 control-label">Default Build Profile</label>
-                        <div class="col-xs-9">
-                            <label>
-                                <select id="build_profile" class="form-control" style="width:300px">
-                                    <option>None</option>
-                                </select>
-
-                                <div id="build_profile_command" style="padding-top:5px">
-                                build command
-                                <pre><code></code></pre>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </form>
+        <div class="form-group">
+            <label class="col-xs-3 control-label">* System</label>
+            <div class="col-xs-9">
+                <select id="project_groups" name="project_groups" class="form-control" multiple>
+                </select>
             </div>
+        </div>
 
-    <!-- :form -->
+        <div class="form-group">
+            <label class="col-xs-3 control-label">* Project Name</label>
+            <div class="col-xs-9">
+                <input type="text" id="name" name="name" class="form-control" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">* Project Owner</label>
+            <div class="col-xs-9">
+                <select id="project_owner" class="form-control" multiple>
+                    <option value="AL">cwpark</option>
+                    <option value="WY">gwkoo</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label"> Description</label>
+            <div class="col-xs-9">
+                <textarea class="form-control" id="description" name="description" rows=4 placeholder="Additional information here..."></textarea>
+            </div>
+        </div>
+
+        <div class="underline">
+            <h3 class="page-header">Repository & Build
+            <small>
+        The settings below configure an LDAP directory which will be regularly </small></h3>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Source Code Repository</label>
+            <div class="col-xs-2 padding-right-zero">
+                <select class="form-control">
+                  <option>svn</option>
+                  <option>git</option>
+                </select>
+            </div>
+            <div class="col-xs-7">
+                <input type="text" name="system_name" class="form-control" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Authentication</label>
+            <div class="col-xs-9">
+                <label class="form-inline">
+                <select id="credential" class="form-control" style="width:300px">
+                    <option>None</option>
+                </select>
+                <button type="button" class="btn btn-sm btn-success">New Credential</button>
+                <div id="credential_desc">
+                Description
+                <pre><code></code></pre>
+                </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Artifact</label>
+            <div class="col-xs-3 padding-right-zero">
+                <input type="text" name="group_id" class="form-control" placeholder="Group ID">
+            </div>
+            <div class="col-xs-3 padding-right-zero">
+                <input type="text" name="artifact_id" class="form-control" placeholder="Artifact ID">
+            </div>
+            <div class="col-xs-3">
+                <input type="text" name="package" class="form-control" placeholder="Package">
+            </div>
+        </div>
+
+        <div class="form-group"> 
+            <label class="col-xs-3 control-label">Default Build Profile</label>
+            <div class="col-xs-9">
+                <label>
+                    <select id="build_profile" class="form-control" style="width:300px">
+                        <option>None</option>
+                    </select>
+
+                    <div id="build_profile_command" style="padding-top:5px">
+                    build command
+                    <pre><code></code></pre>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
-    <button type="submit" class="btn btn-success">Create</button>
+    <button type="submit" id="submit" class="btn btn-success">Create</button>
 </div>
+    <input type="hidden" id="idx" name="idx">
+</form>
 <script type="text/javascript">
 $( document ).ready(function() {
     // change modal size
     $('.modal-dialog').addClass('modal-lg');
+
+    $.ajaxSetup({
+        async: false
+    });
+
+    $('#modalForm').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Project Name is required and cannot be empty'
+                    }
+                    ,stringLength: {
+                        max: 200,
+                        min: 4,
+                        message: 'The Project Name size must be between 4 and 200'
+                    }
+                    ,regexp: {
+                        regexp: /[a-z]+/i,
+                        message: 'The Project Name is not only integer'
+                    }
+                    ,callback: {
+                        message: 'The Project Name is not available'
+                        ,callback: function(value, validator, $field){
+                            if(/^.{4,200}$/.test(value)) {
+                                var idx = $("#idx").val();
+                                var url = "http://localhost:8080/shaman-api/Project/" + value;
+                                var response = getXHR(url);
+                                if (response.status == 204) {
+                                    return true;
+                                } else if(response.status == 200) {
+                                    if(idx == parseInt(response.responseJSON.idx)){
+                                        return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        }
+                    }
+
+                }
+            } //end name field
+            ,description: {
+            }
+        } //end fields
+    })
+    .on('success.form.bv', function(e){
+        e.preventDefault();
+        console.log("xxxx modalForm submit");
+        var model = new Object();
+        model.name = $("#name").val();
+        model.description = $("#description").val();
+        console.log(JSON.stringify(model));
+        
+        // var url = "http://localhost:8080/shaman-api/ProjectGroup/hello"
+        var url = "http://localhost:8080/shaman-api/Project";
+        var method = 'POST';
+        var data = JSON.stringify(model);
+        var draw_reset = true;
+
+        //edit url
+        if($("#idx").val()){
+            url += "/" + $("#idx").val();
+            method = 'PUT';
+            draw_reset = false;
+            console.log(url);
+        }
+
+        $.ajax({
+            // mimeType: 'application/json', // ! Need set mimeType only when run from local file
+            contentType: "application/json; charset=utf-8",
+            accept: 'application/json',
+            url: url,
+            type: method,
+            data: data,
+            beforeSend:function(){
+                $(".processing_indicator").show("fast");
+            },
+            complete:function(){
+                $(".processing_indicator").hide("fast");
+            },
+            success: function(data){
+                $('#commonModal').modal('hide');
+                commonDataTable.draw(draw_reset);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            dataType: "json",
+            async: true
+        });
+    });
 
     
     $.getJSON("data/wiseforge/systems_tiny.json", {}, function(data, textStatus, jqXHR){
@@ -142,8 +227,8 @@ $( document ).ready(function() {
             $("#systems").append("<option value=" + value.idx + ">" + value.name + "</option>");
         });
     });
-    $("#systems").select2({
-        placeholder: "Select System"
+    $("#project_groups").select2({
+        placeholder: "Select Project Group"
     });
 
     $("#project_owner").select2({
@@ -194,5 +279,6 @@ $( document ).ready(function() {
             $("#build_profile").append("<option data-command='" + value.command + "' value=" + value.idx + ">" + value.name + "</option>");
         });
     });
+
 }); //end document ready
 </script>

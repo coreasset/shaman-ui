@@ -30,11 +30,11 @@
                 Project List
             </div>
             <div class="col-xs-6 text-right">
-                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/create_project.html">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/set_project.html">
                     <i class="fa fa-fw fa-plus"></i> New Project</button>
                 <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/set_build_profile.html">
                     <i class="fa fa-fw fa-plus"></i> Create Build Profile</button>
-                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/create_credential.html">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/set_credential.html">
                     <i class="fa fa-fw fa-plus"></i> Create Credential</button>
             </div>
         </div>
@@ -53,6 +53,7 @@
                                 <th>Description</th>
                                 <th>Default Build Profile</th>
                                 <th>Artifact</th>
+                                <th>Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -63,6 +64,7 @@
                                 <th>Description</th>
                                 <th>Default Build Profile</th>
                                 <th>Artifact</th>
+                                <th>Date</th>
                                 <th>Actions</th>
                             </tr>
                         </tfoot>
@@ -98,7 +100,7 @@ var btnAction = '' +
 '            <span class="sr-only">Toggle Dropdown</span>' +
 '        </button>' +
 '        <ul class="dropdown-menu" role="menu">' +
-'            <li><a data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/create_project.html">Edit</a></li>' +
+'            <li><a id="edit_button" data-toggle="modal" data-target="#commonModal" data-idx="#{idx}" href="pages/wiseforge/popup/set_project.html">Edit</a></li>' +
 '            <li><a href="#">Change Log</a></li>' +
 '            <li class="divider"></li>' +
 '            <li><a data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/delete_project.html">Delete</a></li>' +
@@ -110,94 +112,163 @@ var btnAction = '' +
 
 // initialize Data Table
 $( document ).ready(function() {
-    var commonDataTable = $('#commonDataTable').dataTable({
+    $('#commonDataTable')
+    .on('preXhr.dt', function (e, settings, data) {
+        console.log("Cast API Spec");
+        // request, API Spec에 맞춘다.
+        data.limit = data.length;
+        delete data.length;
+
+        data.page = data.start/data.limit + 1;
+        delete data.start;
+
+        data.keyword = data.search['value'];
+        delete data.search;
+
+        if (data.order[0]['column'] == 5)
+            data.order_column = "reg_date"; //필드명하고 맞춰야 한다.
+
+        if (data.order[0]['column'] == 0)
+            data.order_column = "name";
+
+        data.order_dir = data.order[0]['dir'];
+        delete data.order;
+
+        delete data.columns;
+        // console.log(data);
+    }).on('xhr.dt', function (e, settings, data) {
+        console.log("Cast DataTables Spec");
+        // response, datatables Spec에 맞춘다.
+        data.recordsTotal = data.totalCount;
+        delete data.totalCount;
+        data.recordsFiltered = data.filterCount;
+        delete data.filterCount;
+        // console.log(data);
+    });
+
+    $('#commonDataTable').dataTable({
         // Disable sorting on the first column
-        "columnDefs" : [
-        //first define
+        "columnDefs" : [ 
         {
-            'sortable' : false,
-            'target' : 0,
-            "data" : function(row, type, val, meta){
+            "targets": 0
+            ,"data": "name"
+            ,"orderable": true
+        },{
+            "targets": 1
+            ,"data": function data(row, type, val, meta){
+                return "shaman";
+            }
+            ,"orderable": false
+        },{
+            "targets": 2
+            ,"data": "description"
+            ,"orderable": false
+        },{
+            "targets": 3
+            ,"data": function data(row, type, val, meta){
+                return "todo profile";
+            }
+            ,"orderable": false
+        },{
+            "targets": 4
+            ,"data": function data( row, type, val, meta ){
+                var artifact = "";
+                artifact += (row.groupId == null) ? "NaN." : row.groupId + "."
+                artifact += (row.artifactId == null) ? "NaN." : row.artifactId + "."
+                artifact += (row.packageType == null) ? "NaN" : row.packageType
+                return artifact;
+            }
+            ,"orderable": false
+        },{
+            "targets": 5
+            ,"data": "regDate"
+            ,"orderable": true
+        },{
+            "targets": 6
+            ,"data": function data( row, type, val, meta ){
+                return btnAction.replace("#{idx}", row.idx);
+            }
+            ,"orderable": false
+        },{
+            'sortable' : false
+            ,'target' : 4
+        }
+        ]
 
-            },
-            "render": function(data, type, row){
-                return data +  '.aaa';
-            },
-            "targets" : 4
-        // second define
-        }, {
-            "render": function(data, type, row){
-                return data +  '.bbb';
-            },
-            "targets" : 3 
-        }, {
-            "render": function(data, type, row){
-                // systems = data.split(",");
-                return "abc";
-            },
-            "targets" : 1
-        }],
-
-        //remove Search Label Text
-        "oLanguage": { "sSearch": "" },
+        //Processing Indicator
+        ,"oLanguage": {
+            "sProcessing": "<img src='img/ajax-loader1.gif'><div class='datatables-processing-backdrop fade in'></div>"
+        }
 
         // lengthChange: false,
-        processing: true,
-        serverSide: true,
-        ajax: $.fn.dataTable.pipeline( {
+        ,processing: true
+        ,serverSide: true
+        ,ajax: {
             url: "data/wiseforge/project.json",
-            pages: 5 // number of pages to cache
-        }),
-        
-        columns: [
-            {
-                "data": "name"
-                ,"orderable": true
-            },{
-                "data": "systems"
-                ,"orderable": false
-            },{
-                "data": "description"
-                ,"orderable": false
-            },{
-                "data": "default_build_profile"
-                ,"orderable": false
-            },{
-                "data": "package"
-
-                ,"orderable": false
-            },{
-                "data": null
-                ,"defaultContent": btnAction
-                ,"orderable": false
+            "url" : "http://localhost:8080/shaman-api/Project"
+            // url: "data/wiseforge/system.json"
+            // custom http var
+            ,data : function(d){
+                return $.extend({}, d, {
+                    "recordsTotal" : $("#totalCount").val()
+                });
             }
-        ]
-        ,"order": [[2, 'desc']]
+        }
+        ,"order": [[5, 'desc']]
     }); //table
     
+    commonDataTable = $('#commonDataTable').DataTable();
+
     $(".dataTables_filter input[type=search]").attr("placeholder", "Search");
     $(".dataTables_filter input[type=search]").parent().addClass("right-inner-addon");
     $(".dataTables_filter input[type=search]").parent().prepend('<i class="glyphicon glyphicon-search"></i>');
 
-});
+}); //end document ready
 
 // column filter
-function xxx(){
-    $("#commonDataTable tfoot th").each( function ( i ) {
-        var select = $('<select><option value=""></option></select>')
-            .appendTo( $(this).empty() )
-            .on( 'change', function () {
-                var val = $(this).val();
+// function xxx(){
+//     $("#commonDataTable tfoot th").each( function ( i ) {
+//         var select = $('<select><option value=""></option></select>')
+//             .appendTo( $(this).empty() )
+//             .on( 'change', function () {
+//                 var val = $(this).val();
  
-                table.column( i )
-                    .search( val ? '^'+$(this).val()+'$' : val, true, false )
-                    .draw();
-            });
+//                 table.column( i )
+//                     .search( val ? '^'+$(this).val()+'$' : val, true, false )
+//                     .draw();
+//             });
  
-        commonDataTable.column( i ).data().unique().sort().each( function ( d, j ) {
-            select.append( '<option value="'+d+'">'+d+'</option>' )
+//         commonDataTable.column( i ).data().unique().sort().each( function ( d, j ) {
+//             select.append( '<option value="'+d+'">'+d+'</option>' )
+//         });
+//     });
+// }
+
+
+$(document).on("click", "#edit_button", function () {
+    var idx = $(this).data('idx');
+    $('#commonModal').one('shown.bs.modal', function (e) {
+        $.ajax({
+            contentType: "application/json; charset=utf-8",
+            accept: 'application/json',
+            url: 'http://localhost:8080/shaman-api/Project/' + idx,
+            type: 'GET',
+            data: null,
+            success: function(data){
+                console.log(data);
+                $("#idx").val(data.idx);
+                $("#name").val(data.name);
+                $("#description").val(data.description);
+                $("#submit").text(" Edit ");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            dataType: "json",
+            async: false
         });
     });
-}
+});
+
 </script>
 
