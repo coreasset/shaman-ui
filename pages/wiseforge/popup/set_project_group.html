@@ -47,16 +47,11 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
-    <button type="submit" id="submit" class="btn btn-success">Create</button>
+    <button type="submit" id="submit" class="btn btn-success" disabled>Create</button>
 </div>
-    <input type="text" id="idx" name="idx">
+    <input type="hidden" id="idx" name="idx">
 </form>
 <script type="text/javascript">
-
-function getXHR(url){
-    return $.get(url);
-}
-
 $( document ).ready(function() {
     $.ajaxSetup({
         async: false
@@ -96,7 +91,7 @@ $( document ).ready(function() {
                             if(/^.{4,200}$/.test(value)) {
                                 var idx = $("#idx").val();
                                 var url = "http://localhost:8080/shaman-api/ProjectGroup/" + value;
-                                response = getXHR(url);
+                                var response = getXHR(url);
                                 if (response.status == 204) {
                                     return true;
                                 } else if(response.status == 200) {
@@ -105,16 +100,16 @@ $( document ).ready(function() {
                                     }
                                 }
                             }
-
                             return false;
                         }
                     }
-
                 }
+            } //end name
+            ,description: {
             }
-        }
+        } //end fields
     })
-    .on('success.form.bv', function(e){
+    .one('success.form.bv', function(e){
         e.preventDefault();
         console.log("modalForm submit");
         var projectGroup = new Object();
@@ -159,16 +154,8 @@ $( document ).ready(function() {
             dataType: "json",
             async: true
         });
-    });
-});
+    }); //end event on
 
-
-// console.log(projectGroup);
-// $("#submit").click(function(event){
-// $('#modalForm').bind('submit',function(e) {
-
-//     return false;
-// });
-
+}); //end document ready
 
 </script>
