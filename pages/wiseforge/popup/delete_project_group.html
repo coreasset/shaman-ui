@@ -1,67 +1,106 @@
-<form id="modalForm" method="post" class="form-horizontal">
+<form id="modalForm" class="form-horizontal">
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Delete Project Group</h4>
 </div>
 <div class="modal-body">
-        <div class="col-xs-12">
-            <p>
-            삭제하실 Project Group name을 정확히 입력 하세요.
-            <br><br>
-            </p>
-        </div>
-        <div class="row">
-            <div class="col-xs-10 col-offset-1">
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">* Project Group Name</label>
-                        <div class="col-xs-8">
-                            <input type="text" id="name" class="form-control" placeholder="">
-                        </div>
+    <div class="col-xs-12">
+        <p>
+        삭제하실 Project Group name을 정확히 입력 하세요.
+        <br><br>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-offset-1">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">* Project Group Name</label>
+                    <div class="col-xs-8">
+                        <input type="text" id="name" name="name" class="form-control" placeholder="">
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
-    <button type="button" id="submit" class="btn btn-success">Delete</button>
+    <button type="submit" class="btn btn-success">Delete</button>
 </div>
 </form>
 <script type="text/javascript">
 $( document ).ready(function() {
     // change modal size
-});
 
-$("#submit").click(function(event){
-    var url = "http://localhost:8080/shaman-api/ProjectGroup/" + $("#name").val();
-    var method = 'DELETE';
-    var data = null;
-
-    $.ajax({
-        // mimeType: 'application/json', // ! Need set mimeType only when run from local file
-        contentType: "application/json; charset=utf-8",
-        accept: 'application/json',
-        url: url,
-        type: method,
-        data: data,
-        beforeSend:function(){
-            $(".processing_indicator").show("fast");
-        },
-        complete:function(){
-            $(".processing_indicator").hide("fast");
-        },
-        success: function(){
-            $('#commonModal').modal('hide');
-            commonDataTable.draw(false);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
-        },
-        dataType: "html",
+    $.ajaxSetup({
         async: false
     });
-    return false;
-});
+
+    $('#modalForm').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: 'The ProjectGroup Name is required and cannot be empty'
+                    }
+                    ,stringLength: {
+                        max: 200,
+                        min: 4,
+                        message: 'The ProjectGroup Name size must be between 4 and 200'
+                    }
+                    ,callback: {
+                        message: 'cannnot found project group name '
+                        ,callback: function(value, validator, $field){
+                            if(/^.{4,200}$/.test(value)) {
+                                var url = "http://localhost:8080/shaman-api/ProjectGroup/" + value;
+                                var response = getXHR(url);
+                                if (response.status == 200) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                }
+            } //end name field
+        } //end fields
+    })
+    .on('success.form.bv', function(e){
+        e.preventDefault();
+        
+        var url = "http://localhost:8080/shaman-api/ProjectGroup/" + $("#name").val();
+        var method = 'DELETE';
+        var data = null;
+        var draw_reset = false;
+
+        $.ajax({
+            contentType: "application/json; charset=utf-8",
+            accept: 'application/json',
+            url: url,
+            type: method,
+            data: data,
+            beforeSend:function(){
+                $(".processing_indicator").show("fast");
+            },
+            complete:function(){
+                $(".processing_indicator").hide("fast");
+            },
+            success: function(data){
+                $('#commonModal').modal('hide');
+                commonDataTable.draw(draw_reset);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            async: true
+        });
+    }); //end validator & submit
+}); //end document ready
 
 </script>

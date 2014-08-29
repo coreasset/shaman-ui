@@ -1,4 +1,4 @@
-<form id="modalForm" method="post" class="form-horizontal">
+<form id="modalForm" class="form-horizontal">
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Delete Project</h4>
@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <label class="col-xs-4 control-label">* Project Name</label>
                     <div class="col-xs-8">
-                        <input type="text" name="system_name" class="form-control" placeholder="">
+                        <input type="text" id="name" name="name" class="form-control" placeholder="">
                     </div>
                 </div>
             </div>
@@ -32,13 +32,54 @@
 $( document ).ready(function() {
     // change modal size
 
-    $("#submit").click(function(event){
+    $.ajaxSetup({
+        async: false
+    });
+
+    $('#modalForm').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Project Name is required and cannot be empty'
+                    }
+                    ,stringLength: {
+                        max: 200,
+                        min: 4,
+                        message: 'The Project Name size must be between 4 and 200'
+                    }
+                    ,callback: {
+                        message: 'cannnot found project name '
+                        ,callback: function(value, validator, $field){
+                            if(/^.{4,200}$/.test(value)) {
+                                var url = "http://localhost:8080/shaman-api/Project/" + value;
+                                var response = getXHR(url);
+                                if (response.status == 200) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                }
+            } //end name field
+        } //end fields
+    })
+    .on('success.form.bv', function(e){
+        e.preventDefault();
+        
         var url = "http://localhost:8080/shaman-api/Project/" + $("#name").val();
         var method = 'DELETE';
         var data = null;
+        var draw_reset = false;
 
         $.ajax({
-            // mimeType: 'application/json', // ! Need set mimeType only when run from local file
             contentType: "application/json; charset=utf-8",
             accept: 'application/json',
             url: url,
@@ -50,18 +91,16 @@ $( document ).ready(function() {
             complete:function(){
                 $(".processing_indicator").hide("fast");
             },
-            success: function(){
+            success: function(data){
                 $('#commonModal').modal('hide');
-                commonDataTable.draw(false);
+                commonDataTable.draw(draw_reset);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
             },
-            dataType: "html",
-            async: false
+            async: true
         });
-        return false;
-    });
-});
+    }); //end validator & submit
+}); //end document ready
 
 </script>
