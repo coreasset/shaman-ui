@@ -111,34 +111,37 @@ $( document ).ready(function() {
     })
     .one('success.form.bv', function(e){
         e.preventDefault();
-        console.log("modalForm submit");
         var projectGroup = new Object();
         projectGroup.name = $("#name").val();
         projectGroup.description = $("#description").val();
-        console.log(JSON.stringify(projectGroup));
         
-        // var url = "http://localhost:8080/shaman-api/ProjectGroup/hello"
         var url = "http://localhost:8080/shaman-api/ProjectGroup";
-        var method = 'POST';
+        var method = "POST";
         var data = JSON.stringify(projectGroup);
         var draw_reset = true;
 
         //edit url
         if($("#idx").val()){
             url += "/" + $("#idx").val();
-            method = 'PUT';
+            method = "PUT";
             draw_reset = false;
-            console.log(url);
         }
 
+        console.log("modalForm submit");
+        console.log(JSON.stringify(projectGroup));
+        console.log(url);
+        console.log(method);
         $.ajax({
             // mimeType: 'application/json', // ! Need set mimeType only when run from local file
             contentType: "application/json; charset=utf-8",
-            accept: 'application/json',
-            url: url,
             type: method,
+            url: url,
             data: data,
-            beforeSend:function(){
+            accept: 'application/json',
+            beforeSend:function(xhr, opts){
+                console.log("beforeSend");
+                console.log(opts);
+                console.log(xhr);
                 $(".processing_indicator").show("fast");
             },
             complete:function(){
@@ -152,7 +155,7 @@ $( document ).ready(function() {
                 alert(errorThrown);
             },
             dataType: "json",
-            async: true
+            async: false
         });
     }); //end event on
 

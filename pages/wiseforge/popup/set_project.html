@@ -16,12 +16,13 @@
         </div>
 
         <div class="form-group">
-            <label class="col-xs-3 control-label">* System</label>
+            <label class="col-xs-3 control-label">* Project Group</label>
             <div class="col-xs-9">
-                <select id="project_groups" name="project_groups" class="form-control" multiple>
-                </select>
+                <input type="hidden" name="project_groups" id="project_groups" class="form-control" />
             </div>
         </div>
+
+        <input type="hidden" id="thisid" style="width:300px" class="input-xlarge" />
 
         <div class="form-group">
             <label class="col-xs-3 control-label">* Project Name</label>
@@ -222,14 +223,56 @@ $( document ).ready(function() {
     });
 
     
-    $.getJSON("data/wiseforge/systems_tiny.json", {}, function(data, textStatus, jqXHR){
-        $.each(data.data, function(index, value){
-            $("#systems").append("<option value=" + value.idx + ">" + value.name + "</option>");
-        });
+    // $.getJSON("data/wiseforge/systems_tiny.json", {}, function(data, textStatus, jqXHR){
+    //     $.each(data.data, function(index, value){
+    //         $("#systems").append("<option value=" + value.idx + ">" + value.name + "</option>");
+    //     });
+    // });
+    
+    // init ProjectGroup select2
+    $('#project_groups').select2({
+        minimumInputLength: 3,
+        placeholder: 'Search has ProjectGroup',
+        multiple: true,
+        allowClear: true,
+        ajax: {
+            url: "http://localhost:8080/shaman-api/ProjectGroup/",
+            // url: "/test4.json",
+            type: "GET",
+            dataType: 'json',
+            quietMillis: 100,
+            data: function(term) {
+                return {
+                    keyword: term,
+                    limit: 10
+                };
+            },
+            results: function(data) {
+                return { results: data.data }
+            }
+        },
+        id : function(data) {
+            return data.idx;
+        },
+        formatResult: function(data) { 
+            return "<div class='select2-user-result'>" + data.name + "</div>"; 
+        },
+
+        formatSelection: function(data) { 
+            return data.name; 
+        },
+        
+        initSelection : function (element, callback) {
+        }
     });
-    $("#project_groups").select2({
-        placeholder: "Select Project Group"
-    });
+
+    $("#project_groups").on("select2-open", function(){
+        console.log("open");
+    })
+
+    $("#project_groups").on("select2-highlight", function(){
+        console.log("highlight");
+    })
 
     $("#project_owner").select2({
         placeholder: "User Search"
@@ -255,8 +298,6 @@ $( document ).ready(function() {
             $("#credential").append("<option value=" + value.idx + ">" + value.name + "</option>");
         });
     });
-
-
 
     // init build_prifile
     $("#build_profile_command").hide();

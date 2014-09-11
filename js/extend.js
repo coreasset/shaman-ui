@@ -110,3 +110,7 @@ $.fn.dataTable.Api.register( 'clearPipeline()', function () {
         settings.clearCache = true;
     } );
 } );
+
+function getXHR(url){
+    return $.get(url);
+}

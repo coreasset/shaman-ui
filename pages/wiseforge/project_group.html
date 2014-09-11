@@ -192,8 +192,6 @@ $(document).on("click", "#edit_button", function () {
     var idx = $(this).data('idx');
     $('#commonModal').one('shown.bs.modal', function (e) {
         $.ajax({
-            contentType: "application/json; charset=utf-8",
-            accept: 'application/json',
             url: 'http://localhost:8080/shaman-api/ProjectGroup/' + idx,
             type: 'GET',
             data: null,

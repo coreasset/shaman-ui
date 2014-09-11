@@ -249,23 +249,26 @@ $(document).on("click", "#edit_button", function () {
     var idx = $(this).data('idx');
     $('#commonModal').one('shown.bs.modal', function (e) {
         $.ajax({
-            contentType: "application/json; charset=utf-8",
-            accept: 'application/json',
-            url: 'http://localhost:8080/shaman-api/Project/' + idx,
-            type: 'GET',
-            data: null,
-            success: function(data){
-                console.log(data);
+            url: 'http://localhost:8080/shaman-api/Project/' + idx
+            // ,contentType: "application/json; charset=utf-8"
+            // ,accept: 'application/json'
+            ,type: 'GET'
+            ,dataType: "json"
+            ,async: false
+            ,beforeSend:function(){
+            }
+            ,success: function(data){
                 $("#idx").val(data.idx);
                 $("#name").val(data.name);
                 $("#description").val(data.description);
+                $('#project_groups').select2('data', data.groups);
                 $("#submit").text(" Edit ");
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
+            }
+            ,error: function (jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
-            },
-            dataType: "json",
-            async: false
+            }
+            ,complete:function(){
+            }
         });
     });
 });

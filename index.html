@@ -454,8 +454,8 @@
                                 <li><a href="pages/mcloud/forgot.html" target="_blank"><i class="fa fa-angle-double-right"></i> forgot password</a></li>
                                 <li><a href="pages/mcloud/login.html" target="_blank"><i class="fa fa-angle-double-right"></i> login</a></li>
                                 <li><a href="pages/mcloud/popup/launch_instance.html" data-toggle="modal" data-target="#commonModal"><i class="fa fa-angle-double-right"></i> Lanuch Instance</a></li>
-                                <li><a href="pages/mcloud/popup/create_project.html" data-toggle="modal" data-target="#commonModal"><i class="fa fa-angle-double-right"></i> Create Project</a></li>
                                 <li><a class="ajax-link" href="pages/mcloud/dashboard.html"><i class="fa fa-angle-double-right"></i> Dashboard</a></li>
+                                <li><a href="pages/mcloud/popup/set_project.html" data-toggle="modal" data-target="#commonModal"><i class="fa fa-angle-double-right"></i> Create Project</a></li>
                                 <li><a class="ajax-link" href="pages/mcloud/instances_volumes.html"><i class="fa fa-angle-double-right"></i> Instances & Volumes</a></li>
                                 <li><a class="ajax-link" href="pages/mcloud/user_group.html"><i class="fa fa-angle-double-right"></i> User & Group</a></li>
 
@@ -634,7 +634,9 @@ $("[data-toggle=modal][data-target=#commonModal]").click(function(e){
 });
 
 $( document ).ready(function() {
+    
     $(".processing_indicator").hide();
+
     $('input').on('ifChecked', function(event){
       alert('general.html' + event.type + ' callback');
     });
