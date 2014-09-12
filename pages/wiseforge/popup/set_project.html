@@ -128,6 +128,8 @@ $( document ).ready(function() {
         async: false
     });
 
+    // $("#modalForm").data('bootstrapValidator').resetForm();
+
     $('#modalForm').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -168,8 +170,7 @@ $( document ).ready(function() {
                             return false;
                         }
                     }
-
-                }
+                } // end validators
             } //end name field
             ,description: {
             }
@@ -178,12 +179,20 @@ $( document ).ready(function() {
     .on('success.form.bv', function(e){
         e.preventDefault();
         console.log("xxxx modalForm submit");
+
         var model = new Object();
         model.name = $("#name").val();
         model.description = $("#description").val();
+        model.groups = new Array();
+        if($("#project_groups").val()){
+            var groups = $("#project_groups").val().split(",");
+            for(i=0; i < groups.length; i++){
+                model.groups.push({"idx": groups[i]});
+            }
+        }
+
         console.log(JSON.stringify(model));
         
-        // var url = "http://localhost:8080/shaman-api/ProjectGroup/hello"
         var url = "http://localhost:8080/shaman-api/Project";
         var method = 'POST';
         var data = JSON.stringify(model);
