@@ -28,13 +28,11 @@
                     <div class="form-group">
                         <label class="col-xs-4 control-label"> Include Projects</label>
                         <div class="col-xs-8">
-                            <select id="projects" name="projects" class="form-control" multiple>
-                                <option value="1">a</option>
-                                <option value="2">b</option>
-                                <option value="3">c</option>
-                            </select>
+                            <input type="hidden" id="projects" name="projects" class="form-control">
                         </div>
                     </div>
+                    <input type="hidden" id="thisid" style="width:300px" class="input-xlarge" />
+
                     <div class="form-group">
                         <label class="col-xs-4 control-label"> Description</label>
                         <div class="col-xs-8">
@@ -47,7 +45,7 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
-    <button type="submit" id="submit" class="btn btn-success" disabled>Create</button>
+    <button type="submit" id="submit" class="btn btn-success">Create</button>
 </div>
     <input type="hidden" id="idx" name="idx">
 </form>
@@ -58,10 +56,6 @@ $( document ).ready(function() {
     });
 
     console.log("modal document ready");
-    // change modal size
-    $("#projects").select2({
-        placeholder: "Select Projects"
-    });
 
     $('#modalForm').bootstrapValidator({
         message: 'This value is not valid',
@@ -111,13 +105,20 @@ $( document ).ready(function() {
     })
     .one('success.form.bv', function(e){
         e.preventDefault();
-        var projectGroup = new Object();
-        projectGroup.name = $("#name").val();
-        projectGroup.description = $("#description").val();
-        
+        var model = new Object();
+        model.name = $("#name").val();
+        model.description = $("#description").val();
+        model.projects = new Array();
+        if($("#projects").val()){
+            var projects = $("#projects").val().split(",");
+            for(i=0; i < projects.length; i++){
+                model.projects.push({"idx": projects[i]});
+            }
+        }
+
         var url = "http://localhost:8080/shaman-api/ProjectGroup";
         var method = "POST";
-        var data = JSON.stringify(projectGroup);
+        var data = JSON.stringify(model);
         var draw_reset = true;
 
         //edit url
@@ -128,16 +129,16 @@ $( document ).ready(function() {
         }
 
         console.log("modalForm submit");
-        console.log(JSON.stringify(projectGroup));
+        console.log(JSON.stringify(model));
         console.log(url);
         console.log(method);
         $.ajax({
             // mimeType: 'application/json', // ! Need set mimeType only when run from local file
             contentType: "application/json; charset=utf-8",
+            accept: 'application/json',
             type: method,
             url: url,
             data: data,
-            accept: 'application/json',
             beforeSend:function(xhr, opts){
                 console.log("beforeSend");
                 console.log(opts);
@@ -159,6 +160,42 @@ $( document ).ready(function() {
         });
     }); //end event on
 
+    // init ProjectGroup select2
+    $('#projects').select2({
+        minimumInputLength: 3,
+        placeholder: 'Search has Project',
+        multiple: true,
+        allowClear: true,
+        ajax: {
+            url: "http://localhost:8080/shaman-api/Project/",
+            // url: "/test4.json",
+            type: "GET",
+            dataType: 'json',
+            quietMillis: 100,
+            data: function(term) {
+                return {
+                    keyword: term,
+                    limit: 10
+                };
+            },
+            results: function(data) {
+                return { results: data.data }
+            }
+        },
+        id : function(data) {
+            return data.idx;
+        },
+        formatResult: function(data) { 
+            return "<div class='select2-user-result'>" + data.name + "</div>"; 
+        },
+
+        formatSelection: function(data) { 
+            return data.name; 
+        },
+        
+        initSelection : function (element, callback) {
+        }
+    }); //end Project select2
 }); //end document ready
 
 </script>

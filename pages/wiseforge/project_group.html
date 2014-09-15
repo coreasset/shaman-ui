@@ -200,6 +200,7 @@ $(document).on("click", "#edit_button", function () {
                 $("#idx").val(data.idx);
                 $("#name").val(data.name);
                 $("#description").val(data.description);
+                $('#projects').select2('data', data.projects);
                 $("#submit").text(" Edit ");
             },
             error: function (jqXHR, textStatus, errorThrown) {
