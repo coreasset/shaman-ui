@@ -147,6 +147,13 @@ $( document ).ready(function() {
     });
 
     $('#commonDataTable').dataTable({
+        
+        //remove Search Label Text
+        "oLanguage": { 
+            "sSearch": "",
+            "sProcessing": "<img src='img/ajax-loader1.gif'><div class='datatables-processing-backdrop fade in'></div>"
+        },
+
         // Disable sorting on the first column
         "columnDefs" : [ 
         {
@@ -194,11 +201,6 @@ $( document ).ready(function() {
             ,'target' : 4
         }
         ]
-
-        //Processing Indicator
-        ,"oLanguage": {
-            "sProcessing": "<img src='img/ajax-loader1.gif'><div class='datatables-processing-backdrop fade in'></div>"
-        }
 
         // lengthChange: false,
         ,processing: true
