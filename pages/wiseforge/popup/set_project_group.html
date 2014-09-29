@@ -139,8 +139,6 @@ $( document ).ready(function() {
             data: data,
             beforeSend:function(xhr, opts){
                 console.log("beforeSend");
-                console.log(opts);
-                console.log(xhr);
                 $(".processing_indicator").show("fast");
             },
             complete:function(){
@@ -154,7 +152,7 @@ $( document ).ready(function() {
                 alert(errorThrown);
             },
             dataType: "json",
-            async: false
+            async: true
         });
     }); //end event on
 

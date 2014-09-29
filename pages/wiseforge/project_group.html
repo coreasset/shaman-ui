@@ -177,18 +177,14 @@ $( document ).ready(function() {
         //     }
         // }
     }); //table
-
+    
+    //use the modal
     commonDataTable = $('#commonDataTable').DataTable();
 
     $(".dataTables_filter input[type=search]").attr("placeholder", "Search");
     $(".dataTables_filter input[type=search]").parent().addClass("right-inner-addon");
     $(".dataTables_filter input[type=search]").parent().prepend('<i class="glyphicon glyphicon-search"></i>');
-    // xxx.on( 'xhr', function () {
-    //     var data = xxx.ajax.params();
-    //     console.log( 'Search term was: '+data.search.value );
-    // });
-
-});
+}); //end document ready
 
 $(document).on("click", "#edit_button", function () {
     var idx = $(this).data('idx');

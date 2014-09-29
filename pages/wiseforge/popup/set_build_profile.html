@@ -1,171 +1,317 @@
-<style type="text/css">
-.vline-left {
-    border-left: solid 1px #ddd;
-    padding-left: 20px;
-}
+<link rel="stylesheet" href="js/plugins/select2/select2.css">
+<link href="js/plugins/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="js/plugins/select2/select2.js"></script>
 
-.margin-left-20 {
-    margin-left: 20px;
-}
-
-.first-column-bold tr > td:first-child {
-    font-weight: bold;
-    width: 50%;
-}
-</style>
-
+<form id="modalForm" class="form-horizontal">
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Create Build Profile</h4>
 </div>
 <div class="modal-body">
-    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
-        <div class="row" style="padding-right: 20px">
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">* Profile Name</label>
-                        <div class="col-xs-9">
-                            <input type="text" name="name" class="form-control" placeholder="Profile name...">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label">Flavor</label>
-                        <div class="col-xs-9">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="flavor" value="ant" checked>
-                                   Ant
-                                </label>
-                                <label>
-                                    <input type="radio" name="flavor" value="mvn">
-                                    Maven
-                                </label>
-                                <label>
-                                    <input type="radio" name="flavor" value="gradle">
-                                    Gradle
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="set_build">
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Goal</label>
-                            <div class="col-xs-9">
-                                <label>
-                                <select id="goal" name="goal" class="form-control">
-                                    <option value="compile" selected>compile</option>
-                                    <option value="unit_test">unit test</option>
-                                    <option value="install">install</option>
-                                    <option value="deploy">deploy</option>
-                                    <option value="user_mode">직접 입력</option>
-                                </select>
-                                </label>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Add Options</label>
-                            <div class="col-xs-9">
-                                <input type="text" id="add_arg" class="form-control" placeholder="Additional Arguments...">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Static Analysis</label>
-                            <div class="col-xs-9">
-                                <div class="checkbox">
-                                    <input type="checkbox" name="analysis" id="analysis">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label"> Command Result</label>
-                        <div class="col-xs-9">
-                            <textarea id="build_command" class="form-control" rows=3 placeholder="" readonly style="font-family:Courier New; font-weight:bold;"></textarea>
-
-                            <button type="button" id="user_mode_cancel" class="btn btn-sm btn-success pull-right" style="margin-top:5px">Cancel</button>
-                        </div>
-                    </div>  
-
-
-                    <div class="form-group">
-                        <label class="col-xs-3 control-label"> Description</label>
-                        <div class="col-xs-9">
-                            <textarea class="form-control" rows=3 placeholder="Additional information here..."></textarea>
-                        </div>
-                    </div>
-
+    <div class="row" style="padding-right: 20px">
+        <div class="form-group">
+            <label class="col-xs-3 control-label">* Profile Name</label>
+            <div class="col-xs-9">
+                <input type="text" name="name" id="name" class="form-control" placeholder="Profile name...">
+            </div>
         </div>
-    </form>
-    <!-- :form -->
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Flavor</label>
+            <div class="col-xs-9">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="flavor" value="ant">
+                       Ant
+                    </label>
+                    <label>
+                        <input type="radio" name="flavor" value="mvn">
+                        Maven
+                    </label>
+                    <label>
+                        <input type="radio" name="flavor" value="gradle">
+                        Gradle
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Goal</label>
+            <div class="col-xs-9" id="goal-content" data-type=0>
+                <label id="goal-select">
+                <select id="goal" name="goal" class="form-control" style="width:300px"
+                    required
+                    data-bv-notempty-message="Please Select Goal"
+                >
+                    <option></option>
+                    <option value="compile">compile</option>
+                    <option value="unit_test">unit test</option>
+                    <option value="install">install</option>
+                    <option value="deploy">deploy</option>
+                    <option value="user_mode">직접 입력</option>
+                </select>
+                </label>
+                <button type="button" id="user_mode_cancel" class="btn btn-success btn-sm pull-right" style="margin-top:3px">Cancel</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Add Options</label>
+            <div class="col-xs-9">
+                <input type="text" id="param" name="param" class="form-control" placeholder="Additional Arguments...">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label"> Description</label>
+            <div class="col-xs-9">
+                <textarea id="description" name="description" class="form-control" rows=3 placeholder="Additional information here..."></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-3 control-label"> Command Result</label>
+            <div class="col-xs-9">
+                <textarea id="build_command" class="form-control" rows=3 placeholder="" readonly style="font-family:Courier New; font-weight:bold;"></textarea>
+            </div>
+        </div>  
+
+    </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-success">Create</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    <button type="submit" id="submit" class="btn btn-success">Create</button>
+</div>
+    <input type="hidden" id="idx" name="idx">
+
+</form>
+
+<div id="goal-template" style="background-color:#eee" class="">
+    <span id="goal-input">
+    <input type="text" name="goal" class="form-control" placeholder="Build Goal..."
+    data-bv-message="The Goal is not valid"
+
+    required
+    data-bv-notempty-message="The Goal is required and cannot be empty"
+    
+    pattern="^[a-zA-Z0-9]+$"
+    data-bv-regexp-message="The Goal can only consist of alphabetical, number"
+    />
+</span>
+
 </div>
 
 <script type="text/javascript">
-
 function makeBuildCommand(){
-    var cmd_template = "{flavor} {goal} {add_arg} {analysis}";
+    var param_template= "{param}";
+    var cmd_template = "{flavor} {goal}";
     var cmd = "";
+    var param = "";
     cmd = cmd_template.replace("{flavor}", $("input[name*='flavor']:checked").val());
-    cmd = cmd.replace("{goal}", $("#goal").val());
-    cmd = cmd.replace("{add_arg}", $("#add_arg").val());
-    cmd = cmd.replace("{add_arg}", "");
-    if ($("#analysis").is(":checked")){
-        cmd = cmd + " -Danalysis=true";
-    }
-    cmd = cmd.replace("{analysis}", "");
-    $("#build_command").val(cmd);
+    cmd = cmd.replace("{goal}", $("#modalForm [name=goal]").val());
+    param = param_template.replace("{param}", $("#param").val().replace($("#analysis").val(),""));
+    param = param.replace("{param}", "");
+
+    $("#build_command").val(cmd + " " + param);
     console.log(cmd);
 }
 
+
+function goalToggle(){
+    console.log("goal toggle");
+    // type 0 : select 1 : input
+    // state toggle
+    var state = Math.abs($("#goal-content").data("type") - 1);
+    $("#goal-content").data("type", state);
+
+    console.log(state);
+    if(!state) {
+    //select
+        console.log("toggle select");
+        $("#goal-template").prepend($("#goal-input"));
+        $("#goal-content").prepend($("#goal-select"));
+        $("#user_mode_cancel").hide();
+        $('#modalForm').bootstrapValidator('removeField', "goal");
+        $('#modalForm').bootstrapValidator('addField', "goal");
+        $("select[name=goal]").select2("val", "");
+    } else {
+    //input
+        console.log("toggle input");
+        $("#user_mode_cancel").show();
+        $("#goal-content").prepend($("#goal-input"));
+        $("#goal-template").prepend($("#goal-select"));
+        $('#modalForm').bootstrapValidator('removeField', "goal");
+        $('#modalForm').bootstrapValidator('addField', "goal");
+        $("input[name=goal]").val("");
+    }
+
+    makeBuildCommand();
+    console.log("toggle end");
+}
+
 $( document ).ready(function() {
-    $("#goal").change(function(){
-        if($(this).val() == "user_mode"){
-            $("#set_build").hide();
-            $('#build_command').prop('readonly', false);
-            $('#build_command').prop('placeholder', "Here, write build command...");
-            $('#build_command').focus();
-            $("#user_mode_cancel").show();
+    // init form validator -------------------------------------------------------------------
+    $.ajaxSetup({
+        async: false
+    });
+
+    $('#modalForm').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Build Profile Name is required and cannot be empty'
+                    }
+                    ,stringLength: {
+                        max: 200,
+                        min: 4,
+                        message: 'The Build Profile Name size must be between 4 and 200'
+                    }
+                    ,regexp: {
+                        regexp: /[a-z]+/i,
+                        message: 'The Build Profile Name is not only integer'
+                    }
+                    ,callback: {
+                        message: 'The Build Profile Name is not available'
+                        ,callback: function(value, validator, $field){
+                            if(/^.{4,200}$/.test(value)) {
+                                var idx = $("#idx").val();
+                                var url = "http://localhost:8080/shaman-api/BuildProfile/" + value;
+                                var response = getXHR(url);
+                                if (response.status == 204) {
+                                    return true;
+                                } else if(response.status == 200) {
+                                    if(idx == parseInt(response.responseJSON.idx)){
+                                        return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                } // end validators
+            } //end name field
+            ,flavor : {
+                validators: {
+                    notEmpty: {
+                        message: 'please select a flavor'
+                    }
+                }
+            } //end flavor
+            ,description: {
+            } //end description
+        } //end fields
+    })
+    .on('success.form.bv', function(e){
+        e.preventDefault();
+        console.log("xxxx modalForm submit");
+
+        var model = new Object();
+        model.name = $("#name").val();
+        model.description = $("#description").val();
+        model.flavor = $("input[name*='flavor']:checked").val();
+        model.goal = $("#modalForm [name=goal]").val();
+        model.param = $("#param").val();
+
+        console.log(JSON.stringify(model));
+        return false;
+
+        var url = "http://localhost:8080/shaman-api/BuildProfile";
+        var method = 'POST';
+        var data = JSON.stringify(model);
+        var draw_reset = true;
+
+        //edit url
+        if($("#idx").val()){
+            url += "/" + $("#idx").val();
+            method = 'PUT';
+            draw_reset = false;
+            console.log(url);
         }
+
+        $.ajax({
+            // mimeType: 'application/json', // ! Need set mimeType only when run from local file
+            contentType: "application/json; charset=utf-8",
+            accept: 'application/json',
+            type: method,
+            url: url,
+            data: data,
+            beforeSend:function(xhr, opts){
+                console.log("beforeSend");
+                $(".processing_indicator").show("fast");
+            },
+            complete:function(){
+                $(".processing_indicator").hide("fast");
+            },
+            success: function(data){
+                $('#commonModal').modal('hide');
+                commonDataTable.draw(draw_reset);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            dataType: "json",
+            async: true
+        });
     });
-
-    $("#user_mode_cancel").click(function(){
-        $('#build_command').prop('readonly', true);
-        $("#set_build").show();
-        $("#goal").val("compile");
-        $('#build_command').prop('placeholder', "");
-        $(this).hide();
-    });
+    //form validator-------------------------------------------------------------------
 
 
+    //init ------------------------------
     // change modal size
     $('.modal-dialog').addClass('modal-md');
+    console.log("idx:" + $("#idx").val());
+    if($("#idx").val() != ""){
+        makeBuildCommand();
+    }
+
+    $("#user_mode_cancel").click(function(e){
+        goalToggle();
+    });
 
     $("#user_mode_cancel").hide();
-    makeBuildCommand();
 
-    $("input[name*='flavor']").on('ifChecked', function(event){
+    //init ------------------------------
+    $("input[name='flavor']").on('ifChanged', function(e) {
+        // Get the field name
+        var field = $(this).attr('name');
+        console.log("flavor ifchanged:" + field);
+        $('#modalForm')
+        .data('bootstrapValidator')
+        .updateStatus(field, 'VALID', null)
+        .validateField(field);
+
         makeBuildCommand();
     });
 
-    $("#goal").change(function(){
-        if($(this).val() != "user_mode"){
-            makeBuildCommand();
+    $("select[name=goal]").select2({
+        placeholder: "Select Build goal"
+        ,allowClear: true
+        ,minimumResultsForSearch: -1
+    }).on("select2-selecting", function(event) {
+        console.log("xxx" + event.val);
+        if(event.val != "user_mode"){
+        } else {
+            goalToggle();
         }
     });
 
-    $("#add_arg").keyup(function(e){
+    $("select[name=goal]").change(function(){
         makeBuildCommand();
     });
 
-    $('#analysis').on('ifToggled', function(event){
+    $("input[name=goal]").keyup(function(e){
+        makeBuildCommand();
+    });
+
+    $("#param").keyup(function(e){
         makeBuildCommand();
     });
 

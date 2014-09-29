@@ -1,36 +1,106 @@
+<form id="modalForm" class="form-horizontal">
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h4 class="modal-title">Delete Build Profile</h4>
 </div>
 <div class="modal-body">
-    <form id="defaultForm" method="post" class="form-horizontal" action="target.php">
-        <div class="col-xs-12">
-            <p>
-            삭제하실 Build Profile 이름을 입력 하세요.
-            <br><br>
-            </p>
-        </div>
-        <div class="row">
-            <div class="col-xs-10 col-offset-1">
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-xs-4 control-label">* Build Profile Name</label>
-                        <div class="col-xs-8">
-                            <input type="text" name="build_profile_name" class="form-control" placeholder="">
-                        </div>
+    <div class="col-xs-12">
+        <p>
+        삭제하실 Build Profile 이름을 입력 하세요.
+        <br><br>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-offset-1">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-xs-4 control-label">* Build Profile Name</label>
+                    <div class="col-xs-8">
+                        <input type="text" name="name" id="name" class="form-control" placeholder="">
                     </div>
                 </div>
             </div>
         </div>
-    </form>
-    <!-- :form -->
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
     <button type="submit" class="btn btn-success">Delete</button>
 </div>
+</form>
 <script type="text/javascript">
 $( document ).ready(function() {
     // change modal size
-});
+
+    $.ajaxSetup({
+        async: false
+    });
+
+    $('#modalForm').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: 'The Build Profile Name is required and cannot be empty'
+                    }
+                    ,stringLength: {
+                        max: 200,
+                        min: 4,
+                        message: 'The Build Profile Name size must be between 4 and 200'
+                    }
+                    ,callback: {
+                        message: 'cannnot found Build Profile name '
+                        ,callback: function(value, validator, $field){
+                            if(/^.{4,200}$/.test(value)) {
+                                var url = "http://localhost:8080/shaman-api/BuildProfile/" + value;
+                                var response = getXHR(url);
+                                if (response.status == 200) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                }
+            } //end name field
+        } //end fields
+    })
+    .on('success.form.bv', function(e){
+        e.preventDefault();
+        
+        var url = "http://localhost:8080/shaman-api/BuildProfile/" + $("#name").val();
+        var method = 'DELETE';
+        var data = null;
+        var draw_reset = false;
+
+        $.ajax({
+            contentType: "application/json; charset=utf-8",
+            accept: 'application/json',
+            url: url,
+            type: method,
+            data: data,
+            beforeSend:function(){
+                $(".processing_indicator").show("fast");
+            },
+            complete:function(){
+                $(".processing_indicator").hide("fast");
+            },
+            success: function(data){
+                $('#commonModal').modal('hide');
+                commonDataTable.draw(draw_reset);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            async: false
+        });
+    }); //end validator & submit
+}); //end document ready
+
 </script>

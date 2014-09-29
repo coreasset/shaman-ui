@@ -49,7 +49,7 @@
 								<th>Flavor</th>
 								<th>Goal</th>
 								<th>Add Options</th>
-								<th>Related Projects</th>
+								<th>date</th>
 								<th>Action</th>
 							</tr>
 						</thead>
@@ -59,8 +59,6 @@
 			</div><!-- /.box -->
 		</div>
 	</div>
-
-    
 
 </section><!-- /.content -->
 
@@ -74,15 +72,47 @@ var btnAction = '' +
 '            <span class="sr-only">Toggle Dropdown</span>' +
 '        </button>' +
 '        <ul class="dropdown-menu" role="menu">' +
-'            <li><a data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/set_build_profile.html">Edit</a></li>' +
+'            <li><a id="edit_button" data-idx="#{idx}" data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/set_build_profile.html">Edit</a></li>' +
 '            <li class="divider"></li>' +
-'            <li><a data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/delete_build_profile.html">Delete</a></li>' +
+'            <li><a id="delete_button" data-toggle="modal" data-target="#commonModal" href="pages/wiseforge/popup/delete_build_profile.html">Delete</a></li>' +
 '        </ul>' +
 '    </div>';
 
 
 // initialize Data Table
 $( document ).ready(function() {
+    $('#commonDataTable')
+    .on('preXhr.dt', function (e, settings, data) {
+        console.log("Cast API Spec");
+        // request, API Spec에 맞춘다.
+        data.limit = data.length;
+        delete data.length;
+
+        data.page = data.start/data.limit + 1;
+        delete data.start;
+
+        data.keyword = data.search['value'];
+        delete data.search;
+
+        if (data.order[0]['column'] == 5)
+            data.order_column = "reg_date"; //필드명하고 맞춰야 한다.
+
+        if (data.order[0]['column'] == 0)
+            data.order_column = "name";
+
+        data.order_dir = data.order[0]['dir'];
+        delete data.order;
+
+        delete data.columns;
+    }).on('xhr.dt', function (e, settings, data) {
+        console.log("Cast DataTables Spec");
+        // response, datatables Spec에 맞춘다.
+        data.recordsTotal = data.totalCount;
+        delete data.totalCount;
+        data.recordsFiltered = data.filterCount;
+        delete data.filterCount;
+    });
+
 	$('#commonDataTable').dataTable({
 		// Disable sorting on the first column
 		"columnDefs" : [ {
@@ -90,46 +120,121 @@ $( document ).ready(function() {
 			'target' : 0
 		}],
 
-		//remove Search Label Text
-		"oLanguage": { "sSearch": "" },
+        //remove Search Label Text
+        "oLanguage": { 
+            "sSearch": "",
+            "sProcessing": "<img src='img/ajax-loader1.gif'><div class='datatables-processing-backdrop fade in'></div>"
+        },
+
+        // Disable sorting on the first column
+        "columnDefs" : [ 
+        {
+            "targets": 0
+            ,"data": "name"
+            ,"orderable": true
+        },{
+            "targets": 1
+            ,"data": "description"
+            ,"orderable": false
+        },{
+            "targets": 2
+            ,"data": "flavor"
+            ,"orderable": false
+        },{
+            "targets": 3
+            ,"data": "goal"
+            ,"orderable": false
+        },{
+            "targets": 4
+            ,"data": "param"
+            ,"orderable": false
+        },{
+            "targets": 5
+            ,"data": "regDate"
+            ,"orderable": false
+        },{
+            "targets": 6
+            ,"data": function data( row, type, val, meta ){
+                return btnAction.replace("#{idx}", row.idx);
+            }
+            ,"orderable": false
+        },{
+            'sortable' : false
+            ,'target' : 4
+        }
+        ],
 
 		// lengthChange: false,
 		processing: true,
 		serverSide: true,
-		ajax: $.fn.dataTable.pipeline( {
-			url: "data/wiseforge/build_profile.json",
-			pages: 5
-		}),
-		
-		columns: [
-			{
-				"data": "name"
-				,"orderable": true
-			},{
-				"data": "desc"
-				,"orderable": false
-			},{
-				"data": "flavor"
-				,"orderable": false
-			},{
-				"data": "goal"
-			},{
-				"data": "add_options"
-			},{
-				"data": "related_projects_cnt"
-			},{
-				"data": null
-				,"defaultContent": btnAction
-				,"orderable": false
-			}
-		]
-		,"order": [[1, 'asc']]
+        ajax: {
+            // url: "data/wiseforge/project.json",
+            url : "http://localhost:8080/shaman-api/BuildProfile"
+            ,data : function(d){
+                return $.extend({}, d, {
+                    "recordsTotal" : $("#totalCount").val()
+                });
+            }
+        },
+		"order": [[1, 'asc']]
 	}); //table
 	
+	commonDataTable = $('#commonDataTable').DataTable();
+
 	$(".dataTables_filter input[type=search]").attr("placeholder", "Search");
 	$(".dataTables_filter input[type=search]").parent().addClass("right-inner-addon");
 	$(".dataTables_filter input[type=search]").parent().prepend('<i class="glyphicon glyphicon-search"></i>');
 
-});
+
+	$(document).on("click", "#edit_button", function () {
+	    var idx = $(this).data('idx');
+	    $('#commonModal').one('shown.bs.modal', function (e) {
+	    	console.log("4. shown.bs.modal from contents-page");
+	        $.ajax({
+	            url: 'http://localhost:8080/shaman-api/BuildProfile/' + idx
+	            ,type: 'GET'
+	            ,dataType: "json"
+	            ,async: false
+	            ,beforeSend:function(){
+	            }
+	            ,success: function(data){
+	            	console.log("modal form data binding");
+	                $("#idx").val(data.idx);
+	                $("#name").val(data.name);
+	                $("#description").val(data.description);
+
+	                $("input[name='flavor']").each(function(index){
+	            		if($("input[name='flavor']").eq(index).val() == data.flavor){
+	                		$("input[name='flavor']").eq(index).iCheck('check');
+	            		}
+	                });
+
+	                var isSelect2 = false;
+	                $("select[name=goal] option").each(function(){
+	                	if($(this).val() == data.goal) {
+	                		$("select[name=goal]").select2('val', [data.goal]);
+	                		isSelect2 = true;
+	                		return false; //break
+	                	}
+	                });
+
+	                if(!isSelect2) {
+	                	goalToggle();
+	                	$("input[name=goal]").val(data.goal);
+	                }
+	                
+	                $("#param").val(data.param);
+	                $("#submit").text(" Edit ");
+
+	            }
+	            ,error: function (jqXHR, textStatus, errorThrown) {
+	                alert(errorThrown);
+	            }
+	            ,complete:function(){
+	            }
+	        });
+	    });
+	}); //end edit button click event end
+}); //end document ready
 </script>
 
