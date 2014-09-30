@@ -264,6 +264,7 @@ $(document).on("click", "#edit_button", function () {
                 $("#name").val(data.name);
                 $("#description").val(data.description);
                 $('#project_groups').select2('data', data.groups);
+                $('#build_profile').select2('data', data.buildProfile);
                 $("#submit").text(" Edit ");
             }
             ,error: function (jqXHR, textStatus, errorThrown) {

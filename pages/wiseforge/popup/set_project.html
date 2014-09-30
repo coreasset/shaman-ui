@@ -98,9 +98,11 @@
             <label class="col-xs-3 control-label">Default Build Profile</label>
             <div class="col-xs-9">
                 <label>
+                <!--
                     <select id="build_profile" class="form-control" style="width:300px">
-                        <option>None</option>
                     </select>
+                -->
+                    <input type="hidden" name="build_profile" id="build_profile" class="form-control" style="width:300px"/>
 
                     <div id="build_profile_command" style="padding-top:5px">
                     build command
@@ -188,6 +190,8 @@ $( document ).ready(function() {
                 model.groups.push({"idx": groups[i]});
             }
         }
+        model.buildProfile = new Object();
+        model.buildProfile.idx = $("#build_profile").val();
 
         console.log(JSON.stringify(model));
         
@@ -229,13 +233,6 @@ $( document ).ready(function() {
         });
     });
 
-    
-    // $.getJSON("data/wiseforge/systems_tiny.json", {}, function(data, textStatus, jqXHR){
-    //     $.each(data.data, function(index, value){
-    //         $("#systems").append("<option value=" + value.idx + ">" + value.name + "</option>");
-    //     });
-    // });
-    
     // init ProjectGroup select2
     $('#project_groups').select2({
         minimumInputLength: 3,
@@ -309,17 +306,43 @@ $( document ).ready(function() {
     // init build_prifile
     $("#build_profile_command").hide();
     $("#build_profile").select2({
-        placeholder: "Build Profile Search"
-        ,allowClear: true
+        minimumInputLength: 2,
+        placeholder: "Build Profile Select",
+        multiple: false,
+        allowClear: true,
+        ajax: {
+            url: "http://localhost:8080/shaman-api/BuildProfile/",
+            type: "GET",
+            dataType: 'json',
+            quietMillis: 100,
+            data: function(term) {
+                return {
+                    keyword: term,
+                    limit: 10
+                };
+            },
+            results: function(data) {
+                return { results: data.data }
+            }
+        },
+        id : function(data) {
+            return data.idx;
+        },
+        formatResult: function(data) { 
+            return "<div class='select2-user-result'>" + data.name + "</div>"; 
+        },
+
+        formatSelection: function(data) { 
+            $("#build_profile_command code").text(data.flavor + " " + data.goal + " " + data.param);
+            $("#build_profile_command").show();
+            return data.name;
+        },
+        
+        initSelection : function (element, callback) {
+        }//end ajax
     }).on("select2-selecting", function(event) {
-        if(event.val == "None") {
-                $("#build_profile_command").hide();
-        } else {
-            $.getJSON("data/wiseforge/build_profiles_command_tiny.json", {"idx":event.val}, function(data, textStatus, jqXHR){
-                $("#build_profile_command code").text(data.data.command);
-                $("#build_profile_command").show();
-            });
-        }
+
+        // }
     });
 
     $.getJSON("data/wiseforge/build_profiles_tiny.json", {}, function(data, textStatus, jqXHR){
